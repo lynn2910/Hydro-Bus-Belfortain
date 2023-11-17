@@ -4,6 +4,9 @@ body {
     margin: 0;
     padding: 0;
 
+    width: 100vw;
+    height: calc(100vh - 16px);
+
     font-family: 'League Spartan', sans-serif;
     color: #000000;
     background: #ffffff;
@@ -19,12 +22,19 @@ main {
     border-radius: 19px;
 
     width: 100%;
+    height: calc(100% - 20px);
 
     padding: 10px 0;
+
+    transition: 0.15s ease-in-out;
 }
 
 .big_docker.full_width {
     width: calc(100% - 20px);
+}
+
+.big_docker.full_height {
+    height: calc(70vh - 20px);
 }
 
 .big_docker h1, .big_docker h2 {
@@ -37,6 +47,10 @@ main {
 
 .no_padding {
     padding: 0;
+}
+
+.scroll_y {
+    overflow-y: scroll;
 }
 
 .row_flex {
@@ -63,14 +77,106 @@ main {
 
 .list {
     width: 100%;
-    overflow-y: scroll;
+}
 
-
+.list.second_column {
+    /*column-count: 2;*/
+    /*column-width: calc(50% - 30px);*/
+    display: flex;
+    flex-direction: column;
+    padding: 10px 0;
 }
 
 .list details.card {
     padding: 10px;
     margin: 10px 15px;
+    break-inside: avoid;
 
-    width: calc(50% - 30px);
+    border-radius: 9px;
+
+    width: calc(100% - 50px);
+}
+
+.list details.card summary {
+    height: 60px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: auto;
+
+    user-select: none;
+
+    transition: 0.15s ease-in-out;
+}
+
+.list details.card summary svg {
+    margin: auto 20px auto 10px;
+}
+
+
+.list details.card[open] summary ~ * {
+  animation: open 0.3s ease-in-out;
+}
+
+@keyframes open {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.list details.card summary h2, .list details.card summary h3 {
+    width: 70%;
+}
+
+.list details.card summary {
+  width: 100%;
+  padding: 0.5rem 0;
+  position: relative;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 300;
+  list-style: none;
+}
+
+/*.list details.card:not([open]) {*/
+/*  height: inherit; !* or any other fixed value that works for you *!*/
+/*  overflow: hidden;*/
+/*}*/
+
+/*.list details.card[open] {*/
+/*  height: auto;*/
+/*}*/
+
+.list details.card summary::-webkit-details-marker {
+  display: none;
+}
+
+.list details.card summary:after {
+  content: "+";
+  color: black;
+  position: absolute;
+  line-height: 0;
+  margin-top: 0.75rem;
+  font-size: 3rem;
+  right: 0;
+  font-weight: 200;
+  transform-origin: center;
+  transition: 0.1s linear;
+}
+
+.list details.card[open] summary:after {
+  transform: rotate(45deg) ;
+  font-size: 3rem;
+}
+
+.list details.card summary {
+  outline: 0;
+}
+
+.fixed {
+    position: fixed;
 }
