@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% block title %}
+        <title>HydroBus</title>
+    {% endblock %}
+
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/base.css') }}" >
+    {% endblock %}
+
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+    <meta name="theme-color" content="#ffffff">
+</head>
+<body>
+{% include('_nav.html') %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+ <!-- TODO ajouter les messages flashs -->
+{% endwith %}
+
+{% block body %}
+    <main>
+        <h2>Bienvenue sur la page d'accueil</h2>
+    </main>
+{% endblock %}
+</body>
+</html>
