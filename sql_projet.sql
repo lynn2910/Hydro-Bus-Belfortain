@@ -1,16 +1,16 @@
 DROP TABLE IF EXISTS controle;
 DROP TABLE IF EXISTS reservoir;
 DROP TABLE IF EXISTS modele_reservoir;
-DROP TABLE IF EXISTS consomme;
+DROP TABLE IF EXISTS Consomme;
 DROP TABLE IF EXISTS mois;
 DROP TABLE IF EXISTS bus;
 DROP TABLE IF EXISTS modele_bus;
 DROP TABLE IF EXISTS flotte;
 
 CREATE TABLE Mois(
-   id_consommation INT,
+   id_mois INT,
    date_plein DATE,
-   PRIMARY KEY(id_consommation)
+   PRIMARY KEY(id_mois)
 );
 
 CREATE TABLE Flotte(
@@ -69,14 +69,14 @@ CREATE TABLE Controle (
    FOREIGN KEY(id_reservoir) REFERENCES Reservoir(id_reservoir)
 );
 
-CREATE TABLE consomme(
+CREATE TABLE Consomme(
    id_bus INT,
-   id_consommation INT,
+   id_consomme INT AUTO_INCREMENT,
    consommation_hydrogene DECIMAL(9,2),
    kilometres_parcourus DECIMAL(9,2),
-   PRIMARY KEY(id_bus, id_consommation),
+   PRIMARY KEY(id_bus, id_consomme),
    FOREIGN KEY(id_bus) REFERENCES Bus(id_bus),
-   FOREIGN KEY(id_consommation) REFERENCES Mois(id_consommation)
+   FOREIGN KEY(id_consomme) REFERENCES Mois(id_mois)
 );
 
 
@@ -143,14 +143,14 @@ VALUES
 
 
 INSERT INTO mois
-    (id_consommation, date_plein)
+    (id_mois, date_plein)
 VALUES
     (1, '2023-05-01'),
     (2, '2023-02-01'),
     (3, '2023-03-01');
 
-INSERT INTO consomme
-    (id_bus, id_consommation, consommation_hydrogene, kilometres_parcourus)
+INSERT INTO Consomme
+    (id_bus, id_consomme, consommation_hydrogene, kilometres_parcourus)
 VALUES
     (1, 1, 210, 2100),
     (1, 2, 215.6, 2156),
@@ -212,8 +212,20 @@ SELECT
     c.kilometres_parcourus,
     m.date_plein
 FROM bus
-LEFT JOIN consomme c on bus.id_bus = c.id_bus
-LEFT JOIN mois m on c.id_consommation = m.id_consommation;
+LEFT JOIN Consomme c on bus.id_bus = c.id_bus
+LEFT JOIN mois m on c.id_consomme = m.id_mois;
+
+-- Obtenir la consommation réelle et le kilométrage (moyenne de tout les mois) pour chaque bus
+SELECT
+    bus.id_flotte,
+    bus.id_bus,
+    bus.nom_bus,
+    AVG(c.consommation_hydrogene) as consommation_hydrogene,
+    AVG(c.kilometres_parcourus) as kilometres_parcourus
+FROM bus
+LEFT JOIN Consomme c on bus.id_bus = c.id_bus
+LEFT JOIN mois m on c.id_consomme = m.id_mois
+GROUP BY bus.id_flotte, bus.id_bus, bus.nom_bus;
 
 -- Obtenir la consommation en hydrogène d'une flotte
 SELECT
@@ -224,9 +236,9 @@ SELECT
        AS moyenne_kilometres_parcourus
 FROM flotte
 LEFT JOIN bus on bus.id_flotte = flotte.id_flotte
-LEFT JOIN consomme c on bus.id_bus = c.id_bus
-LEFT JOIN mois m on c.id_consommation = m.id_consommation
-GROUP BY Flotte.id_flotte;
+LEFT JOIN Consomme c on bus.id_bus = c.id_bus
+LEFT JOIN mois m on c.id_consomme = m.id_mois
+GROUP BY flotte.id_flotte;
 
 
 -- Avoir le nombre de bus pour chaque modèle de bus
@@ -237,4 +249,4 @@ SELECT
         AS nb_bus
 FROM modele_bus
 LEFT JOIN Bus B on modele_bus.id_modele_bus = B.id_modele_bus
-GROUP BY Modele_bus.id_modele_bus;
+GROUP BY modele_bus.id_modele_bus;
