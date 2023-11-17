@@ -1,0 +1,16 @@
+.page_formatter {
+    width: 100%;
+}
+
+.big_docker {
+    width: calc(50% - 20px);
+    margin: 10px;
+}
+
+.child:first-child {
+    margin-top: 0;
+}
+
+.child:last-child {
+    margin-bottom: 0;
+}

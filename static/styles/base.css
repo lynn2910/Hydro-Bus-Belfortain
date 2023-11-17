@@ -1,4 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
 body {
     margin: 0;
     padding: 0;
+
+    font-family: 'League Spartan', sans-serif;
+    color: #000000;
+    background: #ffffff;
+}
+
+main {
+    /* FIXME mettre la bonne taille de la navbar (+ 20px) */
+    margin: 90px 20px 20px 20px;
+}
+
+.big_docker {
+    border: 2px dashed #2A7AC1;
+    border-radius: 19px;
+
+    width: 100%;
+
+    padding: 10px 0;
+}
+
+.big_docker.full_width {
+    width: calc(100% - 20px);
+}
+
+.big_docker h1, .big_docker h2 {
+    margin-left: 20px;
+}
+
+.no_border {
+    border: none;
+}
+
+.no_padding {
+    padding: 0;
+}
+
+.row_flex {
+    display: flex;
+    flex-direction: row;
+}
+
+.column_flex {
+    display: flex;
+    flex-direction: column;
+}
+
+.width_100 {
+    width: 100%;
+}
+
+.drop_shadow {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.inner_shadow {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25) inset;
+}
+
+.list {
+    width: 100%;
+    overflow-y: scroll;
+
+
+}
+
+.list details.card {
+    padding: 10px;
+    margin: 10px 15px;
+
+    width: calc(50% - 30px);
 }

@@ -4,8 +4,34 @@
     <title>Modèles de bus | HydroBus</title>
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/modeles_bus.css') }}" >
+{% endblock %}
+
 {% block body %}
 <main>
-    <p>Modèles de bus</p>
+    <div class="row_flex page_formatter">
+        <div class="big_docker">
+            <h1>Modèles de bus</h1>
+
+            <div class="list double_columns">
+                <details class="card drop_shadow">
+                    <summary>
+
+                    </summary>
+                </details>
+            </div>
+        </div>
+        <div class="big_docker no_border no_padding">
+            <div class="column_flex width_100">
+                <div class="big_docker full_width child">
+                    <h2>Modèles de bus</h2>
+                </div>
+                <div class="big_docker full_width child">
+                    <h2>Modèles de bus</h2>
+                </div>
+            </div>
+        </div>
+    </div>
 </main>
 {% endblock %}
