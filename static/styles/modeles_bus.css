@@ -7,12 +7,17 @@
     margin: 10px;
 }
 
+.big_docker.full_width {
+    width: calc(100% - 25px);
+}
+
 .child:first-child {
     margin-top: 0;
 }
 
 .child:last-child {
     margin-bottom: 0;
+    margin-top: 0;
 }
 
 .list_container {
@@ -23,3 +28,15 @@
 .models_list {
     min-height: calc(70vh - 20px);
 }
+
+.fix_height {
+    height: 400px;
+}
+
+.width_70 {
+    width: 70%;
+}
+.width_30 {
+    width: 30%;
+}
+

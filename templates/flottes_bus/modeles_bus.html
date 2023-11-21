@@ -11,7 +11,7 @@
 {% block body %}
 <main>
     <div class="row_flex page_formatter">
-        <div class="big_docker models_list">
+        <div class="big_docker models_list width_70">
             <h1>Modèles de bus</h1>
 
             <div class="row_flex list_container">
@@ -77,13 +77,34 @@
                 </div>
             </div>
         </div>
-        <div class="big_docker no_border no_padding">
-            <div class="column_flex width_100 fixed">
+        <div class="big_docker no_border no_padding width_30">
+            <div class="column_flex width_100 scroll_y">
                 <div class="big_docker full_width child">
-                    <h2>Modèles de bus</h2>
+                    <h2>Enregistrer un nouveau bus</h2>
+
+                    <!-- TODO Ajouter les champs 'action' et 'method' -->
+                    <form class="spaced">
+
+                        <div class="field">
+                            <label for="nom_modele">Nom du modèle de bus</label>
+                            <input type="text" id="nom_modele" name="nom_modele" required>
+                        </div>
+                        <div class="field">
+                            <label for="nb_places">Nombre de places</label>
+                            <input type="number" id="nb_places" name="nb_places" required>
+                        </div>
+
+                        <button>Enregistrer le modèle</button>
+                    </form>
                 </div>
                 <div class="big_docker full_width child">
-                    <h2>Modèles de bus</h2>
+                    <h2>Flottes de bus</h2>
+
+                    <div class="content_box">
+                        <p><strong>Nombre de flottes:</strong> 4</p>
+
+                        <a class="button">Naviguer vers les flottes et bus</a>
+                    </div>
                 </div>
             </div>
         </div>
