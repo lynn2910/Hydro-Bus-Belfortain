@@ -1,0 +1,162 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+:root{
+    --navbar-height: 90px;
+}
+
+
+
+nav{
+    display: flex;
+    height: var(--navbar-height);
+    background-color: rgb(42, 122, 193);
+    font-family: 'League Spartan', sans-serif;
+    font-size: 24px;
+
+}
+
+.logo_navbar{
+    display: flex;
+    justify-self: start;
+    width: 30%;
+    margin-left: 10px;
+    height: fit-content;
+    align-self: center;
+
+}
+
+.buttons{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 70%;
+}
+
+.nav{
+    display:flex;
+    align-items: center;
+    font-family: 'League Spartan', sans-serif;
+    font-size: 22px;
+    padding-right: 35px;
+    color:rgb(255, 255, 255);
+}
+
+section > ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: right;
+    padding-left: 0px;
+    width: 100%;
+}
+
+section ul{
+    list-style-type: none;
+}
+
+section ul li{
+    float: left;
+    width: 100%;
+    text-align: center;
+}
+
+section ul::after{
+    content: "";
+    display: table;
+    clear: both;
+}
+
+section a{
+    display: block;
+    text-decoration: none;
+    color: black;
+    padding: 10px 0px;
+    width:100%;
+}
+
+.nametag{
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+}
+
+
+.sous-menu{
+    width: 100%;
+    padding-top:0px;
+}
+
+.menu-deroulant:hover .content-controle{
+    margin-top: 15px;
+    transition: all 1s ease;
+}
+
+
+.content-controle{
+    display: none;
+    width: 100%;
+    padding-left: 0px;
+    background: #F2F5FC;
+    border-radius: 15px;
+}
+
+
+section > ul li:hover .content-controle{
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-30%);
+    width: 150%;
+}
+
+.menu-deroulant{
+
+    width: 20%
+}
+
+.menu-deroulant:hover{
+    border-bottom: solid white 3px;
+    padding-top: 2px;
+    transition: all 400ms ease;
+}
+
+.sous-menu li{
+    text-align: left;
+    padding: 0px 0px 0px 15px;
+    height: min-content;
+}
+
+.sous-menu div li:hover a{
+    color: orange;
+    transition: all 300ms ease;
+}
+
+.content-reservoir{
+    display: none;
+    width: 100%;
+    padding-left: 0px;
+    background: #F2F5FC;
+    border-radius: 15px;
+}
+
+section > ul li:hover .content-reservoir{
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-17%);
+    width: 150%;
+}
+
+
+.content-bus{
+    display: none;
+    width: 100%;
+    padding-left: 0px;
+    background: #F2F5FC;
+    border-radius: 15px;
+}
+
+section > ul li:hover .content-bus{
+    display: flex;
+    flex-direction: column;
+    transform: translateX(-120px);
+    width: 130%;
+}
+
