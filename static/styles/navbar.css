@@ -15,12 +15,18 @@ nav{
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 2000;
 }
 
-nav img {
+nav a.logo {
     margin: auto auto auto 20px;
 
     height: calc(var(--navbar-height) / 2);
+}
+
+nav .logo img {
+    height: 100%;
+    width: auto;
 }
 
 nav .buttons {

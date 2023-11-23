@@ -1,5 +1,7 @@
 <nav>
-    <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="logo hydrobus belfortain">
+    <a class="logo" href="/">
+        <img src="{{ url_for('static', filename='images/Logo.png') }}" alt="logo hydrobus belfortain">
+    </a>
     <div class="buttons">
             <ul>
                 <li class="menu-deroulant">
@@ -25,7 +27,7 @@
                         <li><a href="/flottes_bus/show#new_flotte">Enregistrer une nouvelle flotte</a></li>
                         <li><a href="/flottes_bus/show#new_bus">Enregistrer un nouveau bus</a></li>
                         <li><a href="/flottes_bus/models">Lister les modèles de bus</a></li>
-                        <li><a href="/flottes_bus/models#new_model">Enregistrer un nouveau modèle de bus</a></li>
+                        <li><a href="/flottes_bus/models#nom_modele">Enregistrer un nouveau modèle de bus</a></li>
                     </ul>
                 </li>
             </ul>
