@@ -146,15 +146,6 @@ main {
   list-style: none;
 }
 
-/*.list details.card:not([open]) {*/
-/*  height: inherit; !* or any other fixed value that works for you *!*/
-/*  overflow: hidden;*/
-/*}*/
-
-/*.list details.card[open] {*/
-/*  height: auto;*/
-/*}*/
-
 .list details.card summary::-webkit-details-marker {
   display: none;
 }
@@ -180,6 +171,74 @@ main {
 .list details.card summary {
   outline: 0;
 }
+
+.list details.card .body .left, .list details.card .body .right {
+    width: calc(50% - 10px);
+    margin: 0 5px;
+}
+
+.list details.card .body .card_actions {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.list details.card .body .card_actions svg {
+    margin: auto 2px;
+}
+
+.list details.card .body .info {
+    width: calc(100% - 20px);
+    padding: 5px;
+    border-bottom: 1px solid #BEBEBE;
+    margin: 5px 0;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    height: 60px;
+}
+
+.list details.card .body .fuck_you {
+    width: calc(100% - 10px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.list details.card .body .fuck_you .card_actions {
+    margin-bottom: auto;
+}
+
+.list details.card .body .fuck_you .card_actions svg {
+    height: 24px;
+    width: 24px;
+    padding: 5px;
+
+    border-radius: 5px;
+
+    transition: background 0.15s ease-in-out;
+}
+
+.list details.card .body .fuck_you .card_actions svg:hover {
+    transition: background 0.15s ease-in-out;
+    background: rgba(108, 174, 231, 0.25);
+}
+
+.list details.card .body .info h4 {
+    margin: auto 5px auto auto;
+    font-weight: bolder;
+}
+
+.list details.card .body .info p {
+    margin: auto 0 auto auto;
+    font-weight: lighter;
+    text-align: right;
+}
+
+
+
 
 .fixed {
     position: fixed;
