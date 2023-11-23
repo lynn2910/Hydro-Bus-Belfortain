@@ -96,7 +96,7 @@ INSERT INTO Modele_bus
     (id_modele_bus, nom_modele_bus, nb_places_bus, consommation_hydrogene_effective)
 VALUE
     (1, 'Aegis', 33, 10.0),
-    (2, 'Fonsett', 41, 10.0);
+    (2, 'Fonsett', 41, 12.0);
 
 INSERT INTO Bus
     (id_bus, nom_bus, date_achat_bus, id_flotte, id_modele_bus)
@@ -253,3 +253,7 @@ SELECT
 FROM Modele_bus
 LEFT JOIN Bus B on Modele_bus.id_modele_bus = B.id_modele_bus
 GROUP BY Modele_bus.id_modele_bus;
+
+
+
+

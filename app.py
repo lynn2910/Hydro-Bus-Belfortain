@@ -1,6 +1,8 @@
 from flask import Flask, render_template, g
 import pymysql.cursors
 
+import requests
+
 app = Flask(__name__)
 app.secret_key = "e%3v*/=Nj8Zbzz=$bqr1DA$BM7V6/sgWiFD7/NUa6F$psx3wZC6zr~C8MxGAM)#F"
 
@@ -70,7 +72,11 @@ def show_flottes_bus():
 
 @app.route('/flottes_bus/models')
 def modeles_bus():
-    return render_template('flottes_bus/modeles_bus.html')
+    cursor = get_db().cursor()
+    cursor.execute(requests.SHOW_BUS_MODELS)
+
+    models_list = cursor.fetchall()
+    return render_template('flottes_bus/modeles_bus.html', models_list=models_list)
 
 
 @app.route('/controles/show')
