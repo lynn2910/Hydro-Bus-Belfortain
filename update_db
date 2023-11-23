@@ -1,0 +1,13 @@
+#!/bin/bash
+
+read -rp "DB username: " db_username
+read -rp "DB host: " db_host
+read -rp "DB name: " db_name
+echo -n "Entrez votre mot de passe: "
+read -rs password
+
+SQL_SCRIPT="$(dirname "$0")/sql_projet.sql"
+
+mariadb --password=$password -u $db_username -h $db_host --database=$db_name -e "source ${SQL_SCRIPT}" > /dev/null
+
+echo "Base de donnée réinitialisée et à jour"

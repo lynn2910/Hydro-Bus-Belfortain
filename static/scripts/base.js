@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    manage_keyboard_input();
     manage_popups();
 })
 
@@ -99,12 +100,24 @@ function close_edit_popup(card){
  * @param {HTMLElement} card - The card element for which to open delete popups.
  */
 function open_delete_popups_card(card) {
+    // Icon "delete" in the card
     card.querySelectorAll(".popup_delete")
         .forEach(
             function(btn){
                 btn.addEventListener(
                     "click",
                     () => open_delete_popup(card)
+                )
+            }
+        )
+
+    // Button "cancel" in the popup
+    card.querySelectorAll(".popup.delete button.cancel")
+        .forEach(
+            function(btn){
+                btn.addEventListener(
+                    "click",
+                    () => close_delete_popup(card)
                 )
             }
         )
@@ -157,4 +170,22 @@ function close_delete_popup(card){
         return;
 
     p.classList.remove("opened");
+}
+
+function manage_keyboard_input(){
+    document.body.addEventListener(
+        "keydown",
+        (event) => {
+            if (event.key.toLowerCase() === "escape") {
+                document.querySelectorAll(".popup")
+                    .forEach(
+                        (p) => {
+                            if (p.classList.contains("opened")) {
+                                p.classList.remove("opened")
+                            }
+                        }
+                    )
+            }
+        }
+    )
 }
