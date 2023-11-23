@@ -268,15 +268,24 @@ main {
     transform: translate(-50%, -50%);
 
     background: #FDFDFD;
+    border-radius: 7px;
 }
 
-.list details.card .popup .content .popup_close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+.list details.card .popup .content .popup_head .popup_close {
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+}
 
-    width: 35px;
-    height: 35px;
+.list details.card .popup .content .popup_head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.list details.card .popup .content .popup_head *:not(svg) {
+    width: 80%;
+    margin: auto auto auto 20px;
 }
 
 
@@ -369,6 +378,11 @@ form input {
     outline: none;
 
     padding: 7px;
+    margin: 2px;
+}
+
+form input::placeholder {
+    font-size: 0.7rem;
 }
 
 form button {

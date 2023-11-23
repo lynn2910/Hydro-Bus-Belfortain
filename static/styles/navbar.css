@@ -1,163 +1,118 @@
-@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap');
-
 :root{
-    --navbar-height: 90px;
+    --navbar-height: 60px;
 }
 
 
 
 nav{
-    display: flex;
     height: var(--navbar-height);
+    width: 100vw;
+
     background-color: rgb(42, 122, 193);
-    font-family: 'League Spartan', sans-serif;
-    font-size: 24px;
 
-}
-
-.logo_navbar{
     display: flex;
-    justify-self: start;
-    width: 30%;
-    margin-left: 10px;
-    height: fit-content;
-    align-self: center;
 
+    position: fixed;
+    top: 0;
+    left: 0;
 }
 
-.buttons{
+nav img {
+    margin: auto auto auto 20px;
+
+    height: calc(var(--navbar-height) / 2);
+}
+
+nav .buttons {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
     display: flex;
-    flex-direction: row-reverse;
-    width: 70%;
+
+    width: 50%;
+    height: var(--navbar-height);
 }
 
-.nav{
-    display:flex;
-    align-items: center;
-    font-family: 'League Spartan', sans-serif;
-    font-size: 22px;
-    padding-right: 35px;
-    color:rgb(255, 255, 255);
-}
-
-section > ul{
+nav .buttons ul {
+    list-style: none;
     display: flex;
     flex-direction: row;
-    justify-content: right;
-    padding-left: 0px;
+    align-items: center;
+
     width: 100%;
+
+    margin: 0;
+    padding: 0;
 }
 
-section ul{
-    list-style-type: none;
+nav .buttons ul li {
+    margin: auto auto auto 0;
+    padding: 0 10px;
+
+    height: var(--navbar-height);
+
+    display: flex;
 }
 
-section ul li{
-    float: left;
-    width: 100%;
-    text-align: center;
-}
-
-section ul::after{
-    content: "";
-    display: table;
-    clear: both;
-}
-
-section a{
-    display: block;
+nav .buttons ul li a {
+    color: #fff;
     text-decoration: none;
-    color: black;
-    padding: 10px 0px;
-    width:100%;
+    margin: auto;
 }
 
-.nametag{
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-    color: white;
+nav .buttons ul li a.nametag {
+    font-weight: bolder;
 }
 
-
-.sous-menu{
-    width: 100%;
-    padding-top:0px;
-}
-
-.menu-deroulant:hover .content-controle{
-    margin-top: 15px;
-    transition: all 1s ease;
-}
-
-
-.content-controle{
+nav .buttons ul li ul {
     display: none;
-    width: 100%;
-    padding-left: 0px;
-    background: #F2F5FC;
+
+    position: absolute;
+    width: 200px;
+
+    top: var(--navbar-height);
+    transform: translateY(-5px);
+
+    background: rgb(242, 245, 252);
     border-radius: 15px;
 }
 
+nav .buttons ul li:hover {
+    background: #6CAEE7;
+    color: #000;
+    transition: all 0.1s ease-in-out;
+}
 
-section > ul li:hover .content-controle{
+nav .buttons ul li:hover ul,
+nav .buttons ul li *:hover {
     display: flex;
     flex-direction: column;
-    transform: translateX(-30%);
-    width: 150%;
-}
-
-.menu-deroulant{
-
-    width: 20%
-}
-
-.menu-deroulant:hover{
-    border-bottom: solid white 3px;
-    padding-top: 2px;
-    transition: all 400ms ease;
-}
-
-.sous-menu li{
+    align-items: flex-start;
     text-align: left;
-    padding: 0px 0px 0px 15px;
-    height: min-content;
 }
 
-.sous-menu div li:hover a{
-    color: orange;
-    transition: all 300ms ease;
+nav .buttons ul li:hover ul li {
+    margin: 2px auto 2px 0;
+    height: 2.5rem;
 }
 
-.content-reservoir{
-    display: none;
-    width: 100%;
-    padding-left: 0px;
-    background: #F2F5FC;
-    border-radius: 15px;
-}
+nav .buttons ul li:hover ul li a {
+    color: #000;
 
-section > ul li:hover .content-reservoir{
+    margin: auto auto auto 0;
+
     display: flex;
     flex-direction: column;
-    transform: translateX(-17%);
-    width: 150%;
+    align-items: flex-start;
 }
 
-
-
-.content-bus{
-    display: none;
-    width: 100%;
-    padding-left: 0px;
-    background: #F2F5FC;
-    border-radius: 15px;
+nav .buttons ul li:hover ul li:hover {
+    background: none;
 }
 
-section > ul li:hover .content-bus{
-    display: flex;
-    flex-direction: column;
-    transform: translateX(-120px);
-    width: 130%;
+nav .buttons ul li:hover ul li:hover a {
+    color: rgba(0, 0, 0, 0.6);
+    transition: color 0.1s ease-in-out;
 }
-
