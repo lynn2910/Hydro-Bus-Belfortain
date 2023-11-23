@@ -12,6 +12,10 @@ body {
     background: #ffffff;
 }
 
+body.popup_opened {
+    overflow: hidden;
+}
+
 main {
     /* FIXME mettre la bonne taille de la navbar (+ 20px) */
     margin: 90px 20px 20px 20px;
@@ -235,6 +239,44 @@ main {
     margin: auto 0 auto auto;
     font-weight: lighter;
     text-align: right;
+}
+
+.list details.card .popup {
+    position: fixed;
+    z-index: 2000;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: none;
+    transition: none;
+
+    background: rgba(0, 0, 0, 0.5);
+}
+.list details.card .popup.opened {
+    display: block;
+}
+
+.list details.card .popup .content {
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background: #FDFDFD;
+}
+
+.list details.card .popup .content .popup_close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    width: 35px;
+    height: 35px;
 }
 
 
