@@ -48,7 +48,7 @@ nav .buttons ul {
 }
 
 nav .buttons ul li {
-    margin: auto auto auto 0;
+    margin: auto;
     padding: 0 10px;
 
     height: var(--navbar-height);
