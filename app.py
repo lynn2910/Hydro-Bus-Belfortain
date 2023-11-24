@@ -1,17 +1,11 @@
 from flask import Flask, render_template, g
 import pymysql.cursors
 
+import db
 import requests
 
 app = Flask(__name__)
 app.secret_key = "e%3v*/=Nj8Zbzz=$bqr1DA$BM7V6/sgWiFD7/NUa6F$psx3wZC6zr~C8MxGAM)#F"
-
-# TODO Voir les noms de variables à mettre :/
-# FIXME Il faut modifier quand vous êtes sur vos machines
-HOST = "localhost"
-USER = "lynn"
-PASSWORD = "Pusyux8484"  # Ce mot de passe est évidemment faux, je ne suis pas fou
-DATABASE = "hydrobus_belfortain"
 
 
 def get_db():
@@ -33,10 +27,10 @@ def get_db():
     """
     if 'db' not in g:
         g.db = pymysql.connect(
-            host=HOST,
-            user=USER,
-            password=PASSWORD,
-            database=DATABASE,
+            host=db.HOST,
+            user=db.USER,
+            password=db.PASSWORD,
+            database=db.DATABASE,
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )

@@ -1,0 +1,13 @@
+#!/bin/bash
+
+HOST=localhost
+LOGIN=login
+PASSWORD=secret
+DATABASE=BDD_s1_projet
+
+sed -i "s/host=.*/host=\"${HOST}\",/g" app.py
+sed -i "s/user=.*/user=\"${LOGIN}\",/g" app.py
+sed -i "s/password=.*/password=\"${PASSWORD}\",/g" app.py
+sed -i "s/database=.*/database=\"${DATABASE}\",/g" app.py
+
+
