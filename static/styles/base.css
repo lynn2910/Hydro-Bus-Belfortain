@@ -201,12 +201,10 @@ main {
     flex-direction: row;
     align-items: center;
 
-    height: 60px;
+    height: 40px;
 }
 
 .list details.card .body .fuck_you {
-    width: calc(100% - 10px);
-
     display: flex;
     flex-direction: column;
     align-items: flex-end;
@@ -232,7 +230,7 @@ main {
 }
 
 .list details.card .body .info h4 {
-    margin: auto 5px auto auto;
+    margin: auto 5px auto 10px;
     font-weight: bolder;
 }
 
