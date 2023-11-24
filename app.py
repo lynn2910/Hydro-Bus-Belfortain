@@ -51,31 +51,22 @@ def home():
 
 @app.route('/reservoirs/show')
 def show_reservoirs():
-    return render_template('reservoirs/show_reservoirs.html')
+    return render_template('show_reservoirs.html')
 
 
-@app.route('/reservoirs/models')
+@app.route('/consommation/show')
 def modeles_reservoirs():
-    return render_template('reservoirs/modeles_reservoirs.html')
+    return render_template('show_consommation.html')
 
 
 @app.route('/flottes_bus/show')
 def show_flottes_bus():
-    return render_template('flottes_bus/show_flottes_bus.html')
-
-
-@app.route('/flottes_bus/models')
-def modeles_bus():
-    cursor = get_db().cursor()
-    cursor.execute(requests.SHOW_BUS_MODELS)
-
-    models_list = cursor.fetchall()
-    return render_template('flottes_bus/modeles_bus.html', models_list=models_list)
+    return render_template('show_flottes_bus.html')
 
 
 @app.route('/controles/show')
 def show_controles():
-    return render_template('controles/show_controles.html')
+    return render_template('show_controles.html')
 
 
 if __name__ == '__main__':

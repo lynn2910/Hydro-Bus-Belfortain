@@ -1,0 +1,89 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    <title>Contrôles | HydroBus</title>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="/styles/controle.css">
+{%  endblock %}
+
+{% block body %}
+<main>
+<section class="list-control">
+    <div class="head-text">
+        <h1>Liste des contrôles</h1>
+        <div class="serach_bar">
+            <p>ci git la search barre</p>
+        </div>
+    </div>
+
+    <section class="list list-control-body">
+        <details class="card">
+            <summary>
+                <img src="/images/Vector.png" alt="">
+                <p>Modèle de bus n°3</p>
+            </summary>
+            <div class="body">
+                <section class="date">
+                    <h3>Date:</h3>
+                    <p>01/01/1990</p>
+                </section>
+                <section class="edit">
+                    <svg class="popup_delete" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.625 4.66667L16.6739 19.3491C16.5907 20.635 16.549 21.278 16.2792 21.7656C16.0416 22.1948 15.6832 22.5398 15.2513 22.7553C14.7608 23 14.1346 23 12.8824 23H8.1176C6.86538 23 6.23927 23 5.74868 22.7553C5.31676 22.5398 4.9584 22.1948 4.72082 21.7656C4.45096 21.278 4.40931 20.635 4.32602 19.3491L3.375 4.66667M1 4.66667H20M15.25 4.66667L14.9287 3.67431C14.6172 2.71264 14.4614 2.2318 14.1726 1.87631C13.9175 1.56238 13.59 1.31939 13.22 1.16962C12.8009 1 12.3086 1 11.3236 1H9.67635C8.69144 1 8.1991 1 7.78004 1.16962C7.41003 1.31939 7.08247 1.56238 6.82741 1.87631C6.53856 2.2318 6.38284 2.71264 6.07139 3.67431L5.75 4.66667" stroke="#F44343" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <svg class="popup_edit" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.0795 5.9141L11.649 16.3628C10.6103 17.4033 7.52709 17.8852 6.83829 17.1952C6.14948 16.5051 6.61962 13.4165 7.65829 12.376L18.0997 1.91639C18.3572 1.63497 18.6689 1.40876 19.0162 1.25137C19.3633 1.09398 19.7388 1.00866 20.1198 1.00063C20.5007 0.992597 20.8794 1.06197 21.2329 1.20458C21.5864 1.3472 21.9074 1.56011 22.1765 1.83042C22.4455 2.10073 22.6572 2.42284 22.7986 2.77733C22.9399 3.13184 23.0083 3.51134 22.9992 3.89298C22.9901 4.27462 22.9039 4.6505 22.7459 4.99786C22.5878 5.34522 22.3611 5.65692 22.0795 5.9141Z" stroke="#2A7AC1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <path d="M10.8401 3.2854H5.37336C4.21347 3.2854 3.10116 3.74696 2.28099 4.56857C1.46083 5.39017 1 6.50449 1 7.66642V18.619C1 19.7809 1.46083 20.8952 2.28099 21.7168C3.10116 22.5384 4.21347 23 5.37336 23H17.4001C19.8164 23 20.6801 21.0285 20.6801 18.619V13.1427" stroke="#2A7AC1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </section>
+                <section class="reservoir">
+                    <h3>Réservoir:</h3>
+                    <p>n°8</p>
+                </section>
+                <section class="compte_rendu">
+                    <h3>Compte rendu:</h3>
+                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Id voluptatum sit repellendus voluptas recusandae enim nemo, voluptatem non. Eum, quasi placeat. Rerum dolorum voluptas provident quo voluptate, delectus consectetur nesciunt.</p>
+                </section>
+            </div>
+            <div class="popup edit">
+                <div class="content">
+                    <h1>AAAAAAAAA</h1>
+                    <div class="popup_close">
+                        <svg  viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.3006 1.30057C-0.433532 3.0347 -0.433532 5.84622 1.3006 7.58034L17.2202 23.5L1.3006 39.4198C-0.433532 41.1538 -0.433532 43.9655 1.3006 45.6996C3.03469 47.4335 5.84625 47.4335 7.58032 45.6996L23.5 29.7796L39.4198 45.6996C41.1539 47.4335 43.9656 47.4335 45.6995 45.6996C47.4335 43.9655 47.4335 41.1538 45.6995 39.4198L29.7796 23.5L45.6995 7.58039C47.4335 5.84631 47.4335 3.03474 45.6995 1.30065C43.9651 -0.433479 41.1539 -0.433479 39.4198 1.30065L23.5 17.2202L7.58032 1.30057C5.84625 -0.433522 3.03469 -0.433522 1.3006 1.30057Z" fill="black"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="popup delete">
+                <div class="content">
+                    <h2>BBBBBBB</h2>
+                    <div class="popup_close">
+                        <svg width="47" height="47" viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.3006 1.30057C-0.433532 3.0347 -0.433532 5.84622 1.3006 7.58034L17.2202 23.5L1.3006 39.4198C-0.433532 41.1538 -0.433532 43.9655 1.3006 45.6996C3.03469 47.4335 5.84625 47.4335 7.58032 45.6996L23.5 29.7796L39.4198 45.6996C41.1539 47.4335 43.9656 47.4335 45.6995 45.6996C47.4335 43.9655 47.4335 41.1538 45.6995 39.4198L29.7796 23.5L45.6995 7.58039C47.4335 5.84631 47.4335 3.03474 45.6995 1.30065C43.9651 -0.433479 41.1539 -0.433479 39.4198 1.30065L23.5 17.2202L7.58032 1.30057C5.84625 -0.433522 3.03469 -0.433522 1.3006 1.30057Z" fill="black"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </details>
+    </section>
+</section>
+<section class="record">
+    <h1>Enregistrer un contrôle</h1>
+    <!-- TODO ajouter action + method -->
+    <form class="record-form">
+        <input type="hidden" id="id_form">
+        <div class="record-rapport-box">
+            <textarea id="record-rapport" name="record-rapport" placeholder="Compte rendu du rapport"></textarea>
+            <label for="record-rapport">Compte rendu du rapport</label>
+        </div>
+        <div class="record-date">
+            <input type="date" name="record-date" id="record-date">
+            <label for="record-date">Date du contrôle</label>
+        </div>
+    </form>
+</section>
+</main>
+{% endblock %}

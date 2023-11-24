@@ -21,7 +21,7 @@
 }
 
 .list_container {
-    height: 75%;
+    height: 65%;
     padding: 10px 0;
 }
 
@@ -34,8 +34,9 @@
 }
 
 .width_70 {
-    width: 70%;
+    width: 60%;
 }
+
 .width_30 {
     width: 30%;
 }
