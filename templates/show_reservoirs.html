@@ -74,47 +74,84 @@
                         <div class="popup edit">
                             <div class="content">
                                 <div class="popup_head">
-                                    <h2>Modification d’un modèle de bus</h2>
+                                    <h2>Modification d’un réservoir</h2>
                                     <div class="popup_close">
                                         <svg  viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.3006 1.30057C-0.433532 3.0347 -0.433532 5.84622 1.3006 7.58034L17.2202 23.5L1.3006 39.4198C-0.433532 41.1538 -0.433532 43.9655 1.3006 45.6996C3.03469 47.4335 5.84625 47.4335 7.58032 45.6996L23.5 29.7796L39.4198 45.6996C41.1539 47.4335 43.9656 47.4335 45.6995 45.6996C47.4335 43.9655 47.4335 41.1538 45.6995 39.4198L29.7796 23.5L45.6995 7.58039C47.4335 5.84631 47.4335 3.03474 45.6995 1.30065C43.9651 -0.433479 41.1539 -0.433479 39.4198 1.30065L23.5 17.2202L7.58032 1.30057C5.84625 -0.433522 3.03469 -0.433522 1.3006 1.30057Z" fill="black"></path>
                                         </svg>
                                     </div>
                                 </div>
-                                <p>Modèle "Aegis"</p>
+                                <p>Bus "Marthan 1"</p>
                                 <!-- TODO faire le formulaire -->
                                 <form class="spaced">
                                     <div class="field">
-                                        <label for="nom_modele_1">Nom du modèle de bus</label>
-                                        <input type="text"
-                                               id="nom_modele_1"
-                                               name="nom_modele"
-                                               placeholder="Nom du modèle de bus"
+                                        <label for="date_service_1">Date de mise en service</label>
+                                        <input type="date"
+                                               id="date_service_1"
+                                               name="date_service_1"
+                                               placeholder="JJ/MM/AAAA"
                                                required>
                                     </div>
                                     <div class="field">
-                                        <label for="nb_places_1">Nombre de places</label>
-                                        <input type="number"
-                                               id="nb_places_1"
-                                               name="nb_places"
-                                               placeholder="Nombre de places"
+                                        <label for="date_retrait_1">Date de retrait du service</label>
+                                        <input type="date"
+                                               id="date_retrait_1"
+                                               name="date_retrait_1"
+                                               placeholder="JJ/MM/AAAA"
                                                required>
                                     </div>
-                                    <button>Enregistrer le modèle</button>
+                                    <div class="field">
+                                        <label for="taille_reservoir_1">Taille du réservoir</label>
+                                        <input type="number"
+                                               id="taille_reservoir_1"
+                                               name="taille_reservoir_1"
+                                               placeholder="Nombre de litres"
+                                               required>
+                                    </div>
+                                    <div class="field">
+                                        <label for="modele_reservoir_1">Modèle du réservoir</label>
+                                        <select class="form-select" id="modele_reservoir_1" name="modele_reservoir_1" required>
+                                            <option value="Modèle s'il existe déjà" selected>
+                                            <option value="Modèle n°1">
+                                            <option value="Modèle n°2">
+                                            <option value="Modèle n°3">
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <label for="position_reservoir_1">Modèle du réservoir</label>
+                                        <select class="form-select" id="position_reservoir_1" name="position_reservoir_1" required>
+                                            <option value="Position réservoir s'il existe déjà" selected>
+                                            <option value="Haut - gauche">
+                                            <option value="Haut - droite">
+                                            <option value="Haut - milieu">
+                                            <option value="Bas - gauche">
+                                            <option value="Bas - droite">
+                                            <option value="Bas - milieu">
+                                        </select>
+                                    </div>
+                                    <div class="field">
+                                        <label for="cycle_reel_1">Nombre de cycles réels</label>
+                                        <input type="number"
+                                               id="cycle_reel_1"
+                                               name="cycle_reel_1"
+                                               placeholder="Nombre de cycles réels"
+                                               required>
+                                    </div>
+                                    <button>Enregistrer la modification</button>
                                 </form>
                             </div>
                         </div>
                         <div class="popup delete">
                             <div class="content">
                                 <div class="popup_head">
-                                    <h2>Supprimer un modèle de bus</h2>
+                                    <h2>Supprimer un réservoir</h2>
                                     <div class="popup_close">
                                         <svg  viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.3006 1.30057C-0.433532 3.0347 -0.433532 5.84622 1.3006 7.58034L17.2202 23.5L1.3006 39.4198C-0.433532 41.1538 -0.433532 43.9655 1.3006 45.6996C3.03469 47.4335 5.84625 47.4335 7.58032 45.6996L23.5 29.7796L39.4198 45.6996C41.1539 47.4335 43.9656 47.4335 45.6995 45.6996C47.4335 43.9655 47.4335 41.1538 45.6995 39.4198L29.7796 23.5L45.6995 7.58039C47.4335 5.84631 47.4335 3.03474 45.6995 1.30065C43.9651 -0.433479 41.1539 -0.433479 39.4198 1.30065L23.5 17.2202L7.58032 1.30057C5.84625 -0.433522 3.03469 -0.433522 1.3006 1.30057Z" fill="black"></path>
                                         </svg>
                                     </div>
                                 </div>
-                                <p>Modèle "Aegis"</p>
+                                <p>Modèle n°1</p>
 
                                 <form class="row_flex action_buttons">
                                     <button type="button" class="cancel">Annuler</button>
