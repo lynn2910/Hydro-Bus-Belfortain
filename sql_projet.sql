@@ -65,6 +65,7 @@ CREATE TABLE Controle (
    date_controle DATE,
    analyse_rendue VARCHAR(200),
    id_reservoir INT NOT NULL,
+   prix DECIMAL(5, 2) NOT NULL,
    PRIMARY KEY(id_controle),
    FOREIGN KEY(id_reservoir) REFERENCES Reservoir(id_reservoir)
 );
@@ -89,58 +90,43 @@ CREATE TABLE Consomme(
 INSERT INTO Flotte
     (id_flotte, nom_flotte, nb_bus_flotte)
 VALUE
-    (1, 'Makna', 3),
-    (2, 'Argentum', 3);
+    (1, 'Route Master', 3),
+    (2, 'City Liner', 2);
 
 INSERT INTO Modele_bus
     (id_modele_bus, nom_modele_bus, nb_places_bus, consommation_hydrogene_effective)
 VALUE
-    (1, 'Aegis', 33, 10.0),
-    (2, 'Fonsett', 41, 12.0);
+    (1, 'Caetano H2.City Gold', 33, 10.0),
+    (2, 'Safra Businova hydrogène', 41, 12.0);
 
 INSERT INTO Bus
     (id_bus, nom_bus, date_achat_bus, id_flotte, id_modele_bus)
 VALUES
-    (1, 'Makna 1', '2021-03-21', 1, 1),
-    (2, 'Makna 2', '2022-04-12', 1, 1),
-    (3, 'Argentum 1', '2022-09-30', 2, 2);
+    (1, 'Route Master 1', '2021-03-21', 1, 1),
+    (2, 'Route Master 2', '2022-04-12', 1, 1),
+    (3, 'City Liner 1', '2022-09-30', 2, 2);
 
 INSERT INTO Modele_reservoir
     (id_modele_reservoir, modele_reservoir, nb_cycles_effectifs)
 VALUE
-    (1, 'Alcamoth', 15000),
-    (2, 'Tephra', 17000);
-
+    (1, 'Hexagon Purus', 15000),
+    (2, 'Luxfer G-Stor H2', 17000);
 INSERT INTO Reservoir
     (id_reservoir, taille_reservoir, position_dans_bus, date_mise_service, date_retrait_service, nb_cycles_reels, id_bus, id_modele_reservoir)
 VALUES
     # Bus n°1
     ( 1,  7, 0, '2021-03-21', NULL,         14934, 1, 1),
-    ( 2,  7, 0, '2021-03-21', NULL,         14946, 1, 1),
-    ( 3,  7, 0, '2023-09-14', NULL,           324, 1, 1),
-    ( 4,  7, 0, '2021-03-21', NULL,         14812, 1, 1),
-    ( 5,  7, 0, '2021-03-21', NULL,         14843, 1, 1),
-    ( 6, 11, 0, '2021-03-21', '2023-09-10', 16723, 1, 2),
     # Bus n°2
-    ( 7,  7, 0, '2022-04-12', NULL,         12597, 2, 1),
-    ( 8,  7, 0, '2022-04-12', NULL,         12327, 2, 1),
-    ( 9,  7, 0, '2022-04-12', NULL,         12349, 2, 1),
-    (10,  7, 0, '2022-04-12', NULL,         12534, 2, 1),
-    (11,  7, 0, '2022-04-12', NULL,         12567, 2, 1),
+    ( 2,  7, 0, '2022-04-12', NULL,         12597, 2, 1),
     # Bus n°3
-    (12, 11, 0, '2022-09-30', NULL,          6621, 3, 2),
-    (13, 11, 0, '2021-08-01', NULL,          8651, 3, 1),
-    (14, 11, 0, '2021-08-01', NULL,          8349, 3, 1),
-    (15, 11, 0, '2022-09-30', NULL,          8629, 3, 2),
-    (16, 11, 0, '2022-09-30', NULL,          6627, 3, 2);
+    ( 3, 11, 0, '2022-09-30', NULL,          6621, 3, 2);
 
 INSERT INTO Controle
-    (date_controle, analyse_rendue, id_reservoir)
+    (date_controle, prix,  analyse_rendue, id_reservoir)
 VALUES
-    ('2023-09-10', 'Le réservoir est en fin de vie, il ne fonctionne plus qu\'à 14% de ses capacités initiales. Je recommande l\'achat d\'un réservoir de la dernière génération', 5),
-    ('2023-07-06', 'Ce réservoir semble être un fin de vie, cependant il est encore fonctionnel à 46% de ses capacités, son changement sera nécessaire dans les prochains mois.', 1),
-    ('2022-12-21', 'Aucun problème n\'est à signaler sur ce réservoir.', 3);
-
+    ('2023-09-10', 59.2, 'The tank is at the end of its life, it is only running at 14% of its initial capacities. I recommend buying a tank of the latest generation', 1),
+    ('2023-07-06', 36.8, 'This tank seems to be at the end of its life, however it is still functional at 46% of its capacities, its change will be necessary in the coming months.', 2),
+    ('2022-12-21', 46.7, 'No problem is to be reported on this reservoir.', 3);
 
 INSERT INTO Mois
     (id_mois, date_plein)
@@ -153,9 +139,8 @@ INSERT INTO Consomme
     (id_bus, id_consomme, consommation_hydrogene, kilometres_parcourus)
 VALUES
     (1, 1, 210, 2100),
-    (1, 2, 215.6, 2156),
-    (1, 3, 364.2, 3642);
-
+    (2, 2, 215.6, 2156),
+    (3, 3, 364.2, 3642);
 
 #
 #
