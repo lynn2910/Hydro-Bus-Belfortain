@@ -52,6 +52,10 @@ main {
     padding: 0;
 }
 
+.yeet_padding {
+    padding: 10px;
+}
+
 .scroll_y {
     overflow-y: scroll;
 }
