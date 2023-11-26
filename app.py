@@ -54,6 +54,11 @@ def show_reservoirs():
     return render_template('reservoirs/show_reservoirs.html')
 
 
+@app.route('/reservoirs/etat')
+def etat_reservoirs():
+    return render_template('etat_reservoirs.html')
+
+
 @app.route('/consommation/show')
 def modeles_reservoirs():
     return render_template('consommation/show_consommation.html')
