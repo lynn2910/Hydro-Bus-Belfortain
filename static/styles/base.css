@@ -360,6 +360,8 @@ button, .button {
     display: block;
     width: fit-content;
 
+    text-decoration: none;
+
     cursor: pointer;
 
     transition: 0.1s ease-in;

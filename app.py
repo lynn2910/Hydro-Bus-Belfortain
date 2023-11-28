@@ -7,6 +7,8 @@ import requests
 app = Flask(__name__)
 app.secret_key = "e%3v*/=Nj8Zbzz=$bqr1DA$BM7V6/sgWiFD7/NUa6F$psx3wZC6zr~C8MxGAM)#F"
 
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
 
 def get_db():
     """
@@ -56,7 +58,7 @@ def show_reservoirs():
 
 @app.route('/reservoirs/etat')
 def etat_reservoirs():
-    return render_template('etat_reservoirs.html')
+    return render_template('reservoirs/etat_reservoirs.html')
 
 
 @app.route('/consommation/show')
