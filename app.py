@@ -51,22 +51,22 @@ def home():
 
 @app.route('/reservoirs/show')
 def show_reservoirs():
-    return render_template('show_reservoirs.html')
+    return render_template('reservoirs/show_reservoirs.html')
 
 
 @app.route('/consommation/show')
 def modeles_reservoirs():
-    return render_template('show_consommation.html')
+    return render_template('consommation/show_consommation.html')
 
 
 @app.route('/flottes_bus/show')
 def show_flottes_bus():
-    return render_template('show_flottes_bus.html')
+    return render_template('bus/show_flottes_bus.html')
 
 
 @app.route('/controles/show')
 def show_controles():
-    return render_template('show_controles.html')
+    return render_template('controles/show_controles.html')
 
 
 if __name__ == '__main__':
