@@ -75,6 +75,9 @@ def show_flottes_bus():
     cursor.execute(requests.GET_FLEETS)
     fleets = cursor.fetchall()
 
+    cursor.execute(requests.GET_BUS_MODELS)
+    bus_models = cursor.fetchall()
+
     prepared_fleets = []
     for fleet in fleets:
         fleet_buses = []
@@ -87,9 +90,9 @@ def show_flottes_bus():
             "buses": fleet_buses
         })
 
-    print(prepared_fleets, buses, fleets)
+    print(bus_models)
 
-    return render_template('bus/show_flottes_bus.html')
+    return render_template('bus/show_flottes_bus.html', flottes=prepared_fleets, bus_models=bus_models)
 
 
 @app.route('/flottes_bus/etat')
