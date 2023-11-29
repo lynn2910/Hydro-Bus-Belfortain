@@ -1,4 +1,6 @@
-from flask import Flask, render_template, g
+import datetime
+
+from flask import Flask, render_template, g, request, redirect, flash
 import pymysql.cursors
 
 import db
@@ -90,9 +92,64 @@ def show_flottes_bus():
             "buses": fleet_buses
         })
 
-    print(bus_models)
-
     return render_template('bus/show_flottes_bus.html', flottes=prepared_fleets, bus_models=bus_models)
+
+
+@app.route('/flottes_bus/bus/new', methods=["POST"])
+def create_bus():
+    id_flotte = int(request.form.get("id_flotte", -1))
+
+    if id_flotte < 0:
+        flash("La flotte n'existe pas. Veillez à sélectionner une flotte")
+        return redirect('/flottes_bus/show')
+
+    id_modele_bus = int(request.form.get("id_modele_bus", -1))
+
+    if id_modele_bus < 0:
+        flash("Le modèle de bus n'existe pas. Veillez à sélectionner un modèle de bus")
+        return redirect('/flottes_bus/show')
+
+    date_service = request.form.get("date_service", "")
+
+    try:
+        datetime.datetime.strptime(date_service, '%Y-%m-%d')
+    except ValueError:
+        flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD")
+        return redirect('/flottes_bus/show')
+
+    nom_bus = request.form.get("nom_bus", "")
+
+    if len(nom_bus) < 1:
+        flash("Le nom du bus doit être précisé")
+        return redirect('/flottes_bus/show')
+
+    # Add to database
+    cursor = get_db().cursor()
+    cursor.execute(requests.INSERT_NEW_BUS, (nom_bus, date_service, id_flotte, id_modele_bus))
+
+    get_db().commit()
+
+    return redirect('/flottes_bus/show')
+
+
+@app.route('/flottes_bus/bus/delete', methods=["GET"])
+def delete_bus():
+    id_bus = request.args.get("id_bus_delete", -1)
+
+    print(id_bus)
+
+    cursor = get_db().cursor()
+    # Get bus name
+    cursor.execute(requests.GET_BUS_NAME, id_bus)
+    bus_name = cursor.fetchone() or {"nom_bus": f"ID({id_bus})"}
+
+    # Delete from database
+    cursor.execute(requests.DELETE_BUS, id_bus)
+    get_db().commit()
+
+    flash(f"Le bus {bus_name['nom_bus']} a été supprimé.")
+
+    return redirect('/flottes_bus/show')
 
 
 @app.route('/flottes_bus/etat')

@@ -129,8 +129,8 @@
                                 <div class="row_flex action_buttons">
                                     <button type="button" class="cancel">Annuler</button>
                                     <!-- TODO ajouter l'action en elle-même -->
-                                    <form>
-                                        <input name="id" type="text" value="{{ bus["id_bus"] }}" hidden="hidden">
+                                    <form action="/flottes_bus/bus/delete" method="get">
+                                        <input name="id_bus_delete" type="text" value="{{ bus["id_bus"] }}" hidden="hidden">
                                         <button type="submit">Supprimer</button>
                                     </form>
                                 </div>
@@ -150,7 +150,7 @@
                     <div class="big_docker full_width child auto_horizontal_margin no_left_margin fix_height">
                         <h2>Ajouter un Bus</h2>
                         <!-- Valeurs du formulaire à récupérer ! -->
-                        <form class="spaced">
+                        <form method="post" action="/flottes_bus/bus/new" class="spaced">
                             <div class="field row_flex">
                                 <label for="nom_bus">Nom du bus</label>
                                 <input type="text" id="nom_bus" name="nom_bus">
