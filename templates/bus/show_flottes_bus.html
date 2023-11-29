@@ -126,14 +126,14 @@
                                         </div>
                                     </div>
                                 <p>Bus "{{ bus["nom_bus"] }}"</p>
-                                <form class="row_flex action_buttons">
+                                <div class="row_flex action_buttons">
                                     <button type="button" class="cancel">Annuler</button>
                                     <!-- TODO ajouter l'action en elle-même -->
                                     <form>
                                         <input name="id" type="text" value="{{ bus["id_bus"] }}" hidden="hidden">
                                         <button type="submit">Supprimer</button>
                                     </form>
-                                </form>
+                                </div>
                                 </div>
                             </div>
                             </details>
@@ -162,21 +162,19 @@
                             <div class="field row_flex">
                                   <label for="id_modele_bus">Modèle de bus</label>
                                   <select class="form-select" id="id_modele_bus" name="id_modele_bus" required>
-                                      <option value="-1" selected>Modèle non-sélectionné</option>
-                                      <option value="1">Modèle 1</option>
-                                      <option value="2">Modèle 2</option>
-                                      <option value="3">Modèle 3</option>
-                                      <option value="4">Modèle 4</option>
+                                      <option value="-1" selected="">Modèle non-sélectionné</option>
+                                      {% for model in bus_models %}
+                                          <option value="{{ model["id_modele_bus"] }}">{{ model["nom_modele_bus"] }}</option>
+                                      {% endfor %}
                                   </select>
                               </div>
                             <div class="field row_flex">
                                 <label for="id_flotte">Flotte</label>
                                 <select class="form-select" id="id_flotte" name="id_flotte" required>
-                                    <option value="-1" selected>Aucune flotte</option>
-                                    <option value="1">Flotte 1</option>
-                                    <option value="2">Flotte 2</option>
-                                    <option value="3">Flotte 3</option>
-                                    <option value="4">Flotte 4</option>
+                                    <option value="-1" selected="">Aucune flotte</option>
+                                    {% for flotte in flottes %}
+                                        <option value="{{ flotte["id_flotte"] }}">{{ flotte["nom_flotte"] }}</option>
+                                    {% endfor %}
                                 </select>
                             </div>
 
