@@ -152,6 +152,46 @@ def delete_bus():
     return redirect('/flottes_bus/show')
 
 
+@app.route('/flottes_bus/bus/edit', methods=["POST"])
+def edit_bus():
+    id_bus = request.form.get("id_bus", -1)
+
+    id_flotte = int(request.form.get("id_flotte", -1))
+
+    if id_flotte < 0:
+        flash("La flotte n'existe pas. Veillez à sélectionner une flotte")
+        return redirect('/flottes_bus/show')
+
+    id_modele_bus = int(request.form.get("id_modele_bus", -1))
+
+    if id_modele_bus < 0:
+        flash("Le modèle de bus n'existe pas. Veillez à sélectionner un modèle de bus")
+        return redirect('/flottes_bus/show')
+
+    date_service = request.form.get("date_service", "")
+
+    try:
+        datetime.datetime.strptime(date_service, '%Y-%m-%d')
+    except ValueError:
+        flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD")
+        return redirect('/flottes_bus/show')
+
+    nom_bus = request.form.get("nom_bus", "")
+
+    if len(nom_bus) < 1:
+        flash("Le nom du bus doit être précisé")
+        return redirect('/flottes_bus/show')
+
+    # Edit in the database
+    cursor = get_db().cursor()
+    cursor.execute(requests.EDIT_BUS, (nom_bus, date_service, id_flotte, id_modele_bus, id_bus))
+    get_db().commit()
+
+    flash(f"Les modifications du bus {nom_bus} ont été effectuées.")
+
+    return redirect('/flottes_bus/show')
+
+
 @app.route('/flottes_bus/etat')
 def etat_flottes_bus():
     return render_template('bus/etat_bus.html')

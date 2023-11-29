@@ -78,7 +78,8 @@
                                 </div>
                                 <p>Bus "{{ bus["nom_bus"] }}"</p>
                                 <!-- TODO faire le formulaire -->
-                                <form class="spaced">
+                                <form method="post" action="/flottes_bus/bus/edit" class="spaced">
+                                    <input name="id_bus" type="text" hidden value="{{ bus["id_bus"] }}">
                                     <div class="field row_flex">
                                         <label for="nom_bus{{ bus["id_bus"] }}">Nom du bus</label>
                                        <input type="text" id="nom_bus{{ bus["id_bus"] }}" name="nom_bus" value="{{ bus["nom_bus"] }}">

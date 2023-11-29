@@ -20,4 +20,13 @@ GET_BUS_MODELS = """SELECT id_modele_bus, nom_modele_bus, nb_places_bus FROM Mod
 INSERT_NEW_BUS = """INSERT INTO Bus (nom_bus, date_achat_bus, id_flotte, id_modele_bus) VALUE (%s, %s, %s, %s);"""
 DELETE_BUS = """DELETE FROM Bus WHERE id_bus = %s;"""
 
-GET_BUS_NAME = """SELECT nom_bus FROM Bus WHERE id = %s;"""
+GET_BUS_NAME = """SELECT nom_bus FROM Bus WHERE id_bus = %s;"""
+
+EDIT_BUS = """UPDATE Bus
+SET
+    nom_bus = %s,
+    date_achat_bus = %s,
+    id_flotte = %s,
+    id_modele_bus = %s
+WHERE
+    id_bus = %s;"""
