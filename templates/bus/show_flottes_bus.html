@@ -82,7 +82,7 @@
                                     <input name="id_bus" type="text" hidden value="{{ bus["id_bus"] }}">
                                     <div class="field row_flex">
                                         <label for="nom_bus{{ bus["id_bus"] }}">Nom du bus</label>
-                                       <input type="text" id="nom_bus{{ bus["id_bus"] }}" name="nom_bus" value="{{ bus["nom_bus"] }}">
+                                       <input type="text" id="nom_bus{{ bus["id_bus"] }}" name="nom_bus" value="{{ bus["nom_bus"] }}" placeholder="Nom du bus">
                                   </div>
                                     <div class="field row_flex">
                                       <label for="date_service{{ bus["id_bus"] }}">Date d'achat</label>
@@ -154,7 +154,7 @@
                         <form method="post" action="/flottes_bus/bus/new" class="spaced">
                             <div class="field row_flex">
                                 <label for="nom_bus">Nom du bus</label>
-                                <input type="text" id="nom_bus" name="nom_bus">
+                                <input type="text" id="nom_bus" name="nom_bus"  placeholder="Nom du bus">
                             </div>
                             <div class="field row_flex">
                                 <label for="date_service">Date d'achat</label>
