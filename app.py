@@ -68,7 +68,33 @@ def modeles_reservoirs():
 
 @app.route('/flottes_bus/show')
 def show_flottes_bus():
+    cursor = get_db().cursor()
+    cursor.execute(requests.GET_BUSES_INSIDE_FLEETS)
+    buses = cursor.fetchall()
+
+    cursor.execute(requests.GET_FLEETS)
+    fleets = cursor.fetchall()
+
+    prepared_fleets = []
+    for fleet in fleets:
+        fleet_buses = []
+        for bus in buses:
+            if bus["id_flotte"] == fleet["id_flotte"]:
+                fleet_buses.append(bus)
+        prepared_fleets.append({
+            "id_flotte": fleet["id_flotte"],
+            "nom_flotte": fleet["nom_flotte"],
+            "buses": fleet_buses
+        })
+
+    print(prepared_fleets, buses, fleets)
+
     return render_template('bus/show_flottes_bus.html')
+
+
+@app.route('/flottes_bus/etat')
+def etat_flottes_bus():
+    return render_template('bus/etat_bus.html')
 
 
 @app.route('/controles/show')

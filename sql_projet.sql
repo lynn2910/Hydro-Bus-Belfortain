@@ -72,12 +72,12 @@ CREATE TABLE Controle (
 
 CREATE TABLE Consomme(
    id_bus INT,
-   id_consomme INT AUTO_INCREMENT,
+   id_date INT,
    consommation_hydrogene DECIMAL(9,2),
    kilometres_parcourus DECIMAL(9,2),
-   PRIMARY KEY(id_bus, id_consomme),
+   PRIMARY KEY(id_bus, id_date),
    FOREIGN KEY(id_bus) REFERENCES Bus(id_bus),
-   FOREIGN KEY(id_consomme) REFERENCES Mois(id_mois)
+   FOREIGN KEY(id_date) REFERENCES Mois(id_mois)
 );
 
 
@@ -133,14 +133,16 @@ INSERT INTO Mois
 VALUES
     (1, '2023-05-01'),
     (2, '2023-02-01'),
-    (3, '2023-03-01');
+    (3, '2023-03-01'),
+    (4, '2023-06-01');
 
 INSERT INTO Consomme
-    (id_bus, id_consomme, consommation_hydrogene, kilometres_parcourus)
+    (id_bus, id_date, consommation_hydrogene, kilometres_parcourus)
 VALUES
     (1, 1, 210, 2100),
-    (2, 2, 215.6, 2156),
-    (3, 3, 364.2, 3642);
+    (2, 3, 159, 1564),
+    (3, 2, 215.6, 2156),
+    (1, 4, 364.2, 3642);
 
 #
 #
@@ -200,7 +202,7 @@ SELECT
 FROM
     Bus
 LEFT JOIN Consomme c on Bus.id_bus = c.id_bus
-LEFT JOIN Mois m on c.id_consomme = m.id_mois;
+LEFT JOIN Mois m on c.id_date = m.id_mois;
 
 -- Obtenir la consommation réelle et le kilométrage (moyenne de tout les mois) pour chaque bus
 SELECT
@@ -212,7 +214,7 @@ SELECT
 FROM
     Bus
 LEFT JOIN Consomme c on Bus.id_bus = c.id_bus
-LEFT JOIN Mois m on c.id_consomme = m.id_mois
+LEFT JOIN Mois m on c.id_date = m.id_mois
 GROUP BY Bus.id_flotte, Bus.id_bus, Bus.nom_bus;
 
 -- Obtenir la consommation en hydrogène d'une flotte
@@ -225,7 +227,7 @@ SELECT
 FROM Flotte
 LEFT JOIN Bus on Bus.id_flotte = Flotte.id_flotte
 LEFT JOIN Consomme c on Bus.id_bus = c.id_bus
-LEFT JOIN Mois m on c.id_consomme = m.id_mois
+LEFT JOIN Mois m on c.id_date = m.id_mois
 GROUP BY Flotte.id_flotte;
 
 
