@@ -239,7 +239,7 @@ def etat_flottes_bus():
         bus_models=bus_models,
         flottes=fleets,
         # Filter
-        filter_word=filter_word,
+        filter_word=filter_word or "",
         date_achat_min=date_achat_min,
         date_achat_max=date_achat_max,
         bus_model=bus_model,
