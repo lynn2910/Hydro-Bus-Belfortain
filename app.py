@@ -201,6 +201,10 @@ def etat_flottes_bus():
 def show_controles():
     return render_template('controles/show_controles.html')
 
+@app.route('/controles/etat')
+def etat_controles():
+    return render_template('controles/etat_controles.html')
+
 
 if __name__ == '__main__':
     app.run()

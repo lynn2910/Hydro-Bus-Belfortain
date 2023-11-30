@@ -127,17 +127,28 @@
         <div class="big_docker no_border no_padding fix_height">
             <div class="column_flex">
                 <div class="big_docker full_width child auto_horizontal_margin no_left_margin">
-                    <h2>Ajouter un contrôle</h2>
+                    <h2>Paramètrage de l'état des réservoirs</h2>
                     <!-- Valeurs du formulaire à récupérer ! -->
                     <form>
+
                         <div class="field row_flex">
-                            <label for="description_2">Compte rendu du contrôle</label>
-                            <textarea name="description_2" id="description_2" cols="30" rows="10"
-                                      class="compte_rendu_area"></textarea>
+                              <label for="numero_controle">numéro du controle</label>
+                              <input type="number" id="numero_controle" name="numero_controle">
                         </div>
                         <div class="field row_flex">
-                              <label for="date_controle_2">Date du contrôle</label>
-                              <input type="date" id="date_controle_2" name="date_controle_2">
+                            <label for="filter_date">Filtrer par date:  </label>
+                            <p>entre le </p>
+                            <input class="form-control" id="filter_date filter_date_min" type="date" name="filter_date filter_date_min">
+                            <p> et le </p>
+                            <input class="form-control" id="filter_date filter_date_max" type="date" name="filter_date filter_date_max">
+                        </div>
+                        <div class="field row_flex">
+                            <label for="prix_controle">Prix du contôle</label>
+                            <p>entre </p>
+                            <input type="number" id="prix_controle prix_controle_min" name="prix_controle prix_controle_min">
+                            <p>€ et </p>
+                            <input type="number" id="prix_controle prix_controle_max" name="prix_controle prix_controle_max">
+                            <p>€</p>
                         </div>
                         <div class="field row_flex">
                             <label for="modele_reservoir">Modèle réservoir</label>
@@ -149,11 +160,7 @@
                             </select>
                         </div>
                         <div class="field row_flex">
-                            <label for="prix_controle_2">Prix du contrôle</label>
-                            <input type="number" id="prix_controle_2" name="prix_controle_2">
-                        </div>
-                        <div class="field row_flex">
-                            <button>Ajouter</button>
+                            <button>Filtrer</button>
                         </div>
                     </form>
                 </div>

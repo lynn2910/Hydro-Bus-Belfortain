@@ -184,6 +184,11 @@ main {
     margin: 0 5px;
 }
 
+.list details.card .body .full{
+    width: calc(100% - 10px);
+    margin: 0 5px;
+}
+
 .list details.card .body .card_actions {
     display: flex;
     flex-direction: row-reverse;
@@ -480,4 +485,13 @@ form button, .popup button {
 
 .width_30 {
     width: 30%;
+}
+
+.compte_rendu_area{
+    resize: none;
+    height: 80px;
+    border: none;
+    border-radius: 15px;
+    background: #FDFDFD;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.25) inset;
 }
