@@ -9,6 +9,8 @@ body {
     font-family: 'League Spartan', sans-serif;
     color: #000000;
     background: #ffffff;
+
+    overflow-x: hidden;
 }
 
 body.popup_opened {

@@ -31,6 +31,7 @@ SET
 WHERE
     id_bus = %s;"""
 
+
 GET_BUSES_STATE = """SELECT
     Bus.id_flotte,
     Bus.id_bus,
@@ -59,3 +60,65 @@ HAVING
         AVG(COALESCE(C.consommation_hydrogene, 0)) >= %s
         AND AVG(COALESCE(C.consommation_hydrogene, 0)) <= %s
     );"""
+
+
+
+
+
+GET_BUSES = """SELECT Bus.id_bus, Bus.nom_bus FROM Bus;"""
+
+GET_RESERVOIRS_INSIDE_BUSES = """SELECT
+    Reservoir.id_reservoir,
+    Reservoir.id_bus,
+    Reservoir.id_modele_reservoir,
+    Reservoir.taille_reservoir,
+    Reservoir.position_dans_bus,
+    Reservoir.date_mise_service,
+    Reservoir.date_retrait_service,
+    Reservoir.nb_cycles_reels,
+    COUNT(C.id_controle) AS nb_controle
+FROM Reservoir
+LEFT JOIN Controle AS C ON C.id_reservoir = Reservoir.id_reservoir
+WHERE Reservoir.id_bus IS NOT NULL
+GROUP BY
+    Reservoir.id_reservoir,
+    Reservoir.id_bus,
+    Reservoir.id_modele_reservoir,
+    Reservoir.taille_reservoir,
+    Reservoir.position_dans_bus,
+    Reservoir.date_mise_service,
+    Reservoir.date_retrait_service,
+    Reservoir.nb_cycles_reels;"""
+
+GET_RESERVOIRS_WITHOUT_BUS = """SELECT
+    Reservoir.id_reservoir,
+    Reservoir.id_bus,
+    Reservoir.id_modele_reservoir,
+    Reservoir.taille_reservoir,
+    Reservoir.position_dans_bus,
+    Reservoir.date_mise_service,
+    Reservoir.date_retrait_service,
+    Reservoir.nb_cycles_reels,
+    COUNT(C.id_controle) AS nb_controle
+FROM Reservoir
+LEFT JOIN Controle AS C ON C.id_reservoir = Reservoir.id_reservoir
+WHERE Reservoir.id_bus IS NULL
+GROUP BY
+    Reservoir.id_reservoir,
+    Reservoir.id_bus,
+    Reservoir.id_modele_reservoir,
+    Reservoir.taille_reservoir,
+    Reservoir.position_dans_bus,
+    Reservoir.date_mise_service,
+    Reservoir.date_retrait_service,
+    Reservoir.nb_cycles_reels;
+"""
+
+GET_RESERVOIRS_MODELS = """SELECT
+    Modele_reservoir.id_modele_reservoir,
+    Modele_reservoir.modele_reservoir
+FROM Modele_reservoir;"""
+
+GET_RESERVOIRS_POSITION = """SELECT
+    Reservoir.position_dans_bus
+FROM Reservoir;"""

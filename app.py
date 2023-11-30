@@ -55,8 +55,23 @@ def home():
 
 @app.route('/reservoirs/show')
 def show_reservoirs():
-    return render_template('reservoirs/show_reservoirs.html')
+    cursor = get_db().cursor()
+    cursor.execute(requests.GET_BUSES)
+    buses = cursor.fetchall()
 
+    cursor.execute(requests.GET_RESERVOIRS_INSIDE_BUSES)
+    reservoirs_bus = cursor.fetchall()
+
+    cursor.execute(requests.GET_RESERVOIRS_WITHOUT_BUS)
+    reservoirs = cursor.fetchall()
+
+    cursor.execute(requests.GET_RESERVOIRS_MODELS)
+    modeles_reservoirs = cursor.fetchall()
+
+    cursor.execute(requests.GET_RESERVOIRS_POSITION)
+    positions = cursor.fetchall()
+
+    return render_template('reservoirs/show_reservoirs.html', buses=buses, reservoirs_bus=reservoirs_bus, reservoirs=reservoirs, modeles_reservoirs=modeles_reservoirs, positions=positions)
 
 @app.route('/reservoirs/etat')
 def etat_reservoirs():

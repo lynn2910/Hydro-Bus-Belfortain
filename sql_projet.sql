@@ -111,15 +111,22 @@ INSERT INTO Modele_reservoir
 VALUE
     (1, 'Hexagon Purus', 15000),
     (2, 'Luxfer G-Stor H2', 17000);
+
 INSERT INTO Reservoir
     (id_reservoir, taille_reservoir, position_dans_bus, date_mise_service, date_retrait_service, nb_cycles_reels, id_bus, id_modele_reservoir)
 VALUES
     # Bus n°1
-    ( 1,  7, 0, '2021-03-21', NULL,         14934, 1, 1),
+    ( 1,  7, 'Haut - gauche', '2021-03-21', NULL, 14934, 1, 1),
+    ( 5,  7, 'Haut - droit', '2021-03-21', NULL, 14934, 1, 1),
     # Bus n°2
-    ( 2,  7, 0, '2022-04-12', NULL,         12597, 2, 1),
+    ( 2,  7, 'Bas - droit', '2022-04-12', NULL, 12597, 2, 2),
+    ( 7,  7, 'Bas gauche', '2022-04-12', NULL, 12597, 2, 2),
     # Bus n°3
-    ( 3, 11, 0, '2022-09-30', NULL,          6621, 3, 2);
+    ( 3, 11, 'Haut - milieu', '2022-09-30', NULL, 6621, 3, 2),
+    ( 6, 11, 'Bas - milieu', '2022-09-30', NULL, 6621, 3, 2),
+    # Sans bus
+    ( 4, 14, NULL, '2022-09-28', NULL, 17605, NULL, 2),
+    ( 8, 8, NULL, '2022-09-28', NULL, 17605, NULL, 1);
 
 INSERT INTO Controle
     (date_controle, prix,  analyse_rendue, id_reservoir)
@@ -240,7 +247,3 @@ SELECT
 FROM Modele_bus
 LEFT JOIN Bus B on Modele_bus.id_modele_bus = B.id_modele_bus
 GROUP BY Modele_bus.id_modele_bus;
-
-
-
-
