@@ -194,7 +194,61 @@ def edit_bus():
 
 @app.route('/flottes_bus/etat')
 def etat_flottes_bus():
-    return render_template('bus/etat_bus.html')
+    filter_word = request.args.get("filter_word")
+
+    date_achat_min = request.args.get("date_achat_min")
+    date_achat_max = request.args.get("date_achat_max")
+
+    distance_totale_min = request.args.get("distance_totale_min")
+    distance_totale_max = request.args.get("distance_totale_max")
+
+    bus_model = request.args.get("modele_bus") or None
+    flotte = request.args.get("flotte") or None
+
+    conso_mensuelle_min = request.args.get("conso_mensuelle_min")
+    conso_mensuelle_max = request.args.get("conso_mensuelle_max")
+
+    cursor = get_db().cursor()
+    cursor.execute(
+        requests.GET_BUSES_STATE,
+        (
+            f"%{filter_word}%" if filter_word is not None else "%",
+            date_achat_min or "1990-01-01",
+            date_achat_max or "3000-01-01",
+            bus_model,
+            flotte,
+            int(distance_totale_min) if distance_totale_min else 0,
+            int(distance_totale_max) if distance_totale_max else 200000000000,
+            int(conso_mensuelle_min) if conso_mensuelle_min else 0,
+            int(conso_mensuelle_max) if conso_mensuelle_max else 200000000000
+        )
+    )
+    buses = cursor.fetchall()
+
+    print(buses)
+
+    cursor.execute(requests.GET_FLEETS)
+    fleets = cursor.fetchall()
+
+    cursor.execute(requests.GET_BUS_MODELS)
+    bus_models = cursor.fetchall()
+
+    return render_template(
+        'bus/etat_bus.html',
+        buses=buses,
+        bus_models=bus_models,
+        flottes=fleets,
+        # Filter
+        filter_word=filter_word,
+        date_achat_min=date_achat_min,
+        date_achat_max=date_achat_max,
+        bus_model=bus_model,
+        flotte_filter=flotte,
+        distance_totale_min=distance_totale_min,
+        distance_totale_max=distance_totale_max,
+        conso_mensuelle_min=conso_mensuelle_min,
+        conso_mensuelle_max=conso_mensuelle_max
+    )
 
 
 @app.route('/controles/show')
