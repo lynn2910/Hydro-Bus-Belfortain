@@ -30,3 +30,32 @@ SET
     id_modele_bus = %s
 WHERE
     id_bus = %s;"""
+
+GET_BUSES_STATE = """SELECT
+    Bus.id_flotte,
+    Bus.id_bus,
+    Bus.id_modele_bus,
+    Bus.nom_bus,
+    Bus.date_achat_bus,
+    SUM(COALESCE(C.kilometres_parcourus, 0)) AS distance_totale,
+    AVG(COALESCE(C.kilometres_parcourus, 0)) AS distance_mensuelle,
+    SUM(COALESCE(C.consommation_hydrogene, 0)) AS conso_totale,
+    AVG(COALESCE(C.consommation_hydrogene, 0)) AS conso_moyenne,
+    COUNT(C.id_date) AS nombre_pleins
+FROM Bus
+LEFT JOIN Consomme C ON C.id_bus = Bus.id_bus
+WHERE
+    (Bus.nom_bus LIKE %s)
+    AND (Bus.date_achat_bus BETWEEN %s AND %s)
+    AND Bus.id_modele_bus = IFNULL(%s, Bus.id_modele_bus)
+    AND Bus.id_flotte = IFNULL(%s, Bus.id_flotte)
+GROUP BY
+    Bus.id_bus
+HAVING
+    (
+        SUM(COALESCE(C.kilometres_parcourus, 0)) >= %s
+        AND SUM(COALESCE(C.kilometres_parcourus, 0)) <= %s
+    ) AND (
+        AVG(COALESCE(C.consommation_hydrogene, 0)) >= %s
+        AND AVG(COALESCE(C.consommation_hydrogene, 0)) <= %s
+    );"""
