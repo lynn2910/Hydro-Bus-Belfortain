@@ -72,6 +72,10 @@
                                                         </svg>
                                                     </div>
                                                     <div class="info">
+                                                        <h4>Modèle du réservoir :</h4>
+                                                        <p>{{reservoir_bus["modele_reservoir"]}}</p>
+                                                    </div>
+                                                    <div class="info">
                                                         <h4>Date de mise en service :</h4>
                                                         <p>{{reservoir_bus["date_mise_service"]}}</p>
                                                     </div>
@@ -92,14 +96,28 @@
                                                         </div>
                                                     </div>
                                                     <p>Modification du réservoir n°{{reservoir_bus["id_reservoir"]}} du bus {{bus["nom_bus"]}}</p>
-                                                    <!-- TODO faire le formulaire -->
-                                                    <form class="spaced">
+                                                    <form action="/reservoirs/edit" method="post">
+                                                        <input name="id_reservoir" type="text" value="{{ reservoir_bus['id_reservoir'] }}" hidden="hidden">
+                                                        <div class="field">
+                                                            <label for="id_bus">Id & Nom du bus</label>
+                                                            <select class="form-select" id="id_bus" name="id_bus">
+                                                                <option selected disabled value="">Sélectionnez un bus</option>
+                                                                <option value="">Aucun bus</option>
+                                                                {% for bus in buses %}
+                                                                    {% if reservoir_bus['id_bus'] == bus['id_bus'] %}
+                                                                        <option selected value="{{ bus['id_bus'] }}">{{ bus["id_bus"] }} - {{ bus["nom_bus"] }}</option>
+                                                                    {% else %}
+                                                                        <option value="{{ bus['id_bus'] }}">{{ bus["id_bus"] }} - {{ bus["nom_bus"] }}</option>
+                                                                    {% endif %}
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
                                                         <div class="field">
                                                             <label for="date_service_{{ reservoir_bus['id_reservoir'] }}">Date de mise en service</label>
                                                             <input type="date"
                                                                    id="date_service_{{ reservoir_bus['id_reservoir'] }}"
                                                                    name="date_service_{{ reservoir_bus['id_reservoir'] }}"
-                                                                   placeholder="JJ/MM/AAAA"
+                                                                   value="{{ reservoir_bus['date_mise_service'] }}"
                                                                    required>
                                                         </div>
                                                         <div class="field">
@@ -107,25 +125,25 @@
                                                             <input type="date"
                                                                    id="date_retrait_{{ reservoir_bus['id_reservoir'] }}"
                                                                    name="date_retrait_{{ reservoir_bus['id_reservoir'] }}"
-                                                                   placeholder="JJ/MM/AAAA"
-                                                                   required>
+                                                                   value="{{ reservoir_bus['date_retrait_service'] }}">
                                                         </div>
                                                         <div class="field">
                                                             <label for="taille_reservoir_{{ reservoir_bus['id_reservoir'] }}">Taille du réservoir</label>
                                                             <input type="number"
                                                                    id="taille_reservoir_{{ reservoir_bus['id_reservoir'] }}"
                                                                    name="taille_reservoir_{{ reservoir_bus['id_reservoir'] }}"
-                                                                   placeholder="Nombre de litres"
+                                                                   value="{{ reservoir_bus['taille_reservoir'] | round}}"
                                                                    required>
                                                         </div>
                                                         <div class="field">
                                                             <label for="modele_reservoir_{{ reservoir_bus['id_reservoir'] }}">Modèle du réservoir</label>
                                                             <select class="form-select" id="modele_reservoir_{{ reservoir_bus['id_reservoir'] }}" name="modele_reservoir_{{ reservoir_bus['id_reservoir'] }}" required>
+                                                                <option selected disabled value="">Sélectionnez un modèle</option>
                                                                 {% for modele in modeles_reservoirs %}
-                                                                    {% if modele["id_modele_reservoir"] == bus["id_modele_reservoir"] %}
-                                                                    <option selected value="{{ modele['id_modele_reservoir'] }}">{{ reservoir_bus["id_modele_reservoir"] }}</option>
+                                                                    {% if modele["id_modele_reservoir"] == reservoir_bus["id_modele_reservoir"] %}
+                                                                        <option selected value="{{ modele['id_modele_reservoir'] }}">{{ modele['id_modele_reservoir'] }} - {{ modele["modele_reservoir"] }}</option>
                                                                     {% else %}
-                                                                    <option value="{{ modele['id_modele_reservoir'] }}">{{ modele["nom_modele_reservoir"] }}</option>
+                                                                        <option value="{{ modele['id_modele_reservoir'] }}">{{ modele['id_modele_reservoir'] }} - {{ modele["modele_reservoir"] }}</option>
                                                                     {% endif %}
                                                                 {% endfor %}
                                                             </select>
@@ -133,11 +151,12 @@
                                                         <div class="field">
                                                             <label for="position_reservoir_{{ reservoir_bus['id_reservoir'] }}">Position du réservoir</label>
                                                             <select class="form-select" id="position_reservoir_{{ reservoir_bus['id_reservoir'] }}" name="position_reservoir_{{ reservoir_bus['id_reservoir'] }}" required>
+                                                                <option selected disabled value="">Sélectionnez une position</option>
+                                                                {% set unique_positions = [] %}
                                                                 {% for position in positions %}
-                                                                    {% if position["position_reservoir"] == reservoir_bus["position_reservoir"] %}
-                                                                    <option selected value="{{ position['position_dans_bus'] }}">{{ position["position_reservoir"] }}</option>
-                                                                    {% else %}
-                                                                    <option value="{{ position['id_modele_reservoir'] }}">{{ position["position_reservoir"] }}</option>
+                                                                    {% if position["position_dans_bus"] is not none and position["position_dans_bus"] not in unique_positions %}
+                                                                        <option {% if position["position_dans_bus"] == reservoir_bus["position_dans_bus"] %}selected{% endif %} value="{{ position['position_dans_bus'] }}">{{ position['position_dans_bus'] }}</option>
+                                                                        {% set _ = unique_positions.append(position["position_dans_bus"]) %}
                                                                     {% endif %}
                                                                 {% endfor %}
                                                             </select>
@@ -147,7 +166,7 @@
                                                             <input type="number"
                                                                    id="cycle_reel_{{ reservoir_bus['id_reservoir'] }}"
                                                                    name="cycle_reel_{{ reservoir_bus['id_reservoir'] }}"
-                                                                   placeholder="Nombre de cycles réels"
+                                                                   value="{{ reservoir_bus['nb_cycles_reels'] }}"
                                                                    required>
                                                         </div>
                                                         <button>Enregistrer la modification</button>
@@ -165,14 +184,13 @@
                                                         </div>
                                                     </div>
                                                     <p>Supprimer le réservoir n°{{reservoir_bus["id_reservoir"]}} du bus {{bus["nom_bus"]}}</p>
-
-                                                    <form class="row_flex action_buttons">
+                                                    <div class="row_flex action_buttons">
                                                         <button type="button" class="cancel">Annuler</button>
-                                                        <!-- TODO ajouter l'action en elle-même -->
-                                                        <form>
+                                                        <form action="/reservoirs/delete" method="get">
+                                                            <input name="id_reservoir" type="text" value="{{ reservoir_bus['id_reservoir'] }}" hidden="hidden">
                                                             <button type="submit">Supprimer</button>
                                                         </form>
-                                                    </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </details>
@@ -241,6 +259,10 @@
                                                 </svg>
                                             </div>
                                             <div class="info">
+                                                <h4>Modèle du réservoir :</h4>
+                                                <p>{{reservoir["modele_reservoir"]}}</p>
+                                            </div>
+                                            <div class="info">
                                                 <h4>Date de mise en service :</h4>
                                                 <p>{{reservoir["date_mise_service"]}}</p>
                                             </div>
@@ -261,14 +283,23 @@
                                                 </div>
                                             </div>
                                             <p>Modifier le réservoir n°{{reservoir["id_reservoir"]}}</p>
-                                            <!-- TODO faire le formulaire -->
-                                            <form class="spaced">
+                                            <form action="/reservoirs/edit" method="post">
+                                                <input name="id_reservoir" type="text" value="{{ reservoir['id_reservoir'] }}" hidden="hidden">
+                                                <div class="field">
+                                                    <label for="id_bus">Id & Nom du bus</label>
+                                                    <select class="form-select" id="id_bus" name="id_bus">
+                                                    <option selected value="">Pas de bus</option>
+                                                    {% for bus in buses %}
+                                                        <option value="{{ bus['id_bus'] }}">{{ bus["id_bus"] }} - {{ bus["nom_bus"] }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                </div>
                                                 <div class="field">
                                                     <label for="date_service_{{ reservoir['id_reservoir'] }}">Date de mise en service</label>
                                                     <input type="date"
                                                            id="date_service_{{ reservoir['id_reservoir'] }}"
                                                            name="date_service_{{ reservoir['id_reservoir'] }}"
-                                                           placeholder="JJ/MM/AAAA"
+                                                           value="{{ reservoir['date_mise_service'] }}"
                                                            required>
                                                 </div>
                                                 <div class="field">
@@ -276,15 +307,14 @@
                                                     <input type="date"
                                                            id="date_retrait_{{ reservoir['id_reservoir'] }}"
                                                            name="date_retrait_{{ reservoir['id_reservoir'] }}"
-                                                           placeholder="JJ/MM/AAAA"
-                                                           required>
+                                                           value="{{ reservoir['date_retrait_service'] }}">
                                                 </div>
                                                 <div class="field">
-                                                    <label for="taille_reservoir_{{ reservoir['id_reservoir'] }}">Taille du réservoir</label>
+                                                    <label for="taille_reservoir_{{ reservoir['id_reservoir'] }}">Taille du réservoir (L)</label>
                                                     <input type="number"
                                                            id="taille_reservoir_{{ reservoir['id_reservoir'] }}"
                                                            name="taille_reservoir_{{ reservoir['id_reservoir'] }}"
-                                                           placeholder="Nombre de litres"
+                                                           value="{{ reservoir['taille_reservoir'] | round}}"
                                                            required>
                                                 </div>
                                                 <div class="field">
@@ -300,15 +330,16 @@
                                                     </select>
                                                 </div>
                                                 <div class="field">
-                                                    <label for="position_reservoir_{{ reservoir['id_reservoir'] }}">Modèle du réservoir</label>
-                                                    <select class="form-select" id="position_reservoir_{{ reservoir['id_reservoir'] }}" name="position_reservoir_{{ reservoir['id_reservoir'] }}" required>
+                                                    <label for="position_reservoir_{{ reservoir['id_reservoir'] }}">Position du réservoir</label>
+                                                    <select class="form-select" id="position_reservoir_{{ reservoir['id_reservoir'] }}" name="position_reservoir_{{ reservoir['id_reservoir'] }}">
+                                                        <option selected value="">Aucune position</option>
+                                                        {% set unique_position = {} %}
                                                         {% for position in positions %}
-                                                                {% if position["position_reservoir"] == reservoir["position_reservoir"] %}
-                                                                <option selected value="{{ position['position_dans_bus'] }}">{{ position["position_reservoir"] }}</option>
-                                                                {% else %}
-                                                                <option value="{{ position['id_modele_reservoir'] }}">{{ position["position_reservoir"] }}</option>
-                                                                {% endif %}
-                                                            {% endfor %}
+                                                            {% if position["position_dans_bus"] not in unique_position and position["position_dans_bus"] is not none and position["position_dans_bus"] != '' %}
+                                                                <option value="{{ position['position_dans_bus'] }}">{{ position['position_dans_bus'] }}</option>
+                                                                {% set _ = unique_position.update({position['position_dans_bus']: true}) %}
+                                                            {% endif %}
+                                                        {% endfor %}
                                                     </select>
                                                 </div>
                                                 <div class="field">
@@ -316,7 +347,7 @@
                                                     <input type="number"
                                                            id="cycle_reel_{{ reservoir['id_reservoir'] }}"
                                                            name="cycle_reel_{{ reservoir['id_reservoir'] }}"
-                                                           placeholder="Nombre de cycles réels"
+                                                           value="{{ reservoir['nb_cycles_reels'] }}"
                                                            required>
                                                 </div>
                                                 <button>Enregistrer la modification</button>
@@ -335,13 +366,13 @@
                                             </div>
                                             <p>Supprimer le réservoir n°{{reservoir["id_reservoir"]}}</p>
 
-                                            <form class="row_flex action_buttons">
+                                            <div class="row_flex action_buttons">
                                                 <button type="button" class="cancel">Annuler</button>
-                                                <!-- TODO ajouter l'action en elle-même -->
-                                                <form>
+                                                <form action="/reservoirs/delete" method="get">
+                                                    <input name="id_reservoir" type="text" value="{{ reservoir['id_reservoir'] }}" hidden="hidden">
                                                     <button type="submit">Supprimer</button>
                                                 </form>
-                                            </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </details>
@@ -357,7 +388,7 @@
                     <div class="big_docker full_width child auto_horizontal_margin no_left_margin fix_height">
                         <h2>Ajouter un réservoir</h2>
                         <!-- Valeurs du formulaire à récupérer ! -->
-                        <form>
+                        <form method="post" action="/reservoirs/new">
                               <div class="field row_flex">
                                   <label for="id_bus">Id & Nom du bus</label>
                                   <select class="form-select" id="id_bus" name="id_bus">
@@ -368,20 +399,20 @@
                                   </select>
                               </div>
                               <div class="field row_flex">
-                                  <label for="date_service">Date de mise en service</label>
-                                  <input type="date" id="date_service" name="date_service" required>
+                                  <label for="date_mise_service">Date de mise en service</label>
+                                  <input type="date" id="date_mise_service" name="date_mise_service" required>
                               </div>
                               <div class="field row_flex">
-                                  <label for="date_retrait">Date de retrait du service</label>
-                                  <input type="date" id="date_retrait" name="date_retrait">
+                                  <label for="date_retrait_service">Date de retrait du service</label>
+                                  <input type="date" id="date_retrait_service" name="date_retrait_service">
                               </div>
                               <div class="field row_flex">
                                   <label for="taille_reservoir">Taille réservoir</label>
-                                  <input type="number" id="taille_reservoir" name="taille_reservoir" required>
+                                  <input type="number" id="taille_reservoir" name="taille_reservoir" placeholder="Entrer la taille" required>
                               </div>
                               <div class="field row_flex">
-                                  <label for="modele_reservoir">Modèle réservoir</label>
-                                  <select class="form-select" id="modele_reservoir" name="modele_reservoir" required>
+                                  <label for="id_modele_reservoir">Modèle réservoir</label>
+                                  <select class="form-select" id="id_modele_reservoir" name="id_modele_reservoir" required>
                                       <option selected value="">Aucun modèle</option>
                                       {% for modele in modeles_reservoirs %}
                                           <option value="{{ modele['id_modele_reservoir'] }}">{{ modele["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
@@ -389,21 +420,21 @@
                                   </select>
                               </div>
                               <div class="field row_flex">
-                                  <label for="position_reservoir">Position réservoir</label>
-                                  <select class="form-select" id="position_reservoir" name="position_reservoir">
+                                  <label for="position_dans_bus">Position réservoir</label>
+                                  <select class="form-select" id="position_dans_bus" name="position_dans_bus">
                                       <option selected value="">Aucune position</option>
                                       {% set unique_position = {} %}
                                       {% for position in positions %}
-                                          {% if position["position_dans_bus"] not in unique_position and position["position_dans_bus"] is not none%}
-                                              <option value="{{ position['id_modele_reservoir'] }}">{{ position['position_dans_bus'] }}</option>
+                                          {% if position["position_dans_bus"] not in unique_position and position["position_dans_bus"] is not none and position["position_dans_bus"] != '' %}
+                                              <option value="{{ position['position_dans_bus'] }}">{{ position['position_dans_bus'] }}</option>
                                               {% set _ = unique_position.update({position['position_dans_bus']: true}) %}
                                           {% endif %}
                                       {% endfor %}
                                   </select>
                               </div>
                               <div class="field row_flex">
-                                  <label for="cycle_reel">Nombre de cycle réel</label>
-                                  <input type="number" id="cycle_reel" name="cycle_reel" required>
+                                  <label for="nb_cycles_reels">Nombre de cycle réel</label>
+                                  <input type="number" id="nb_cycles_reels" name="nb_cycles_reels" placeholder="Entrer le nombre de cycles" required>
                               </div>
                                 <button>Ajouter</button>
                         </form>

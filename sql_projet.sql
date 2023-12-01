@@ -53,7 +53,7 @@ CREATE TABLE Reservoir(
    date_mise_service DATE,
    date_retrait_service DATE,
    nb_cycles_reels INT,
-   id_bus INT,
+   id_bus INT NULL,
    id_modele_reservoir INT NOT NULL,
    PRIMARY KEY(id_reservoir),
    FOREIGN KEY(id_bus) REFERENCES Bus(id_bus),

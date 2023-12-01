@@ -73,6 +73,88 @@ def show_reservoirs():
 
     return render_template('reservoirs/show_reservoirs.html', buses=buses, reservoirs_bus=reservoirs_bus, reservoirs=reservoirs, modeles_reservoirs=modeles_reservoirs, positions=positions)
 
+
+@app.route('/reservoirs/new', methods=["POST"])
+def new_reservoir():
+    cursor = get_db().cursor()
+
+    # Retrieve form data
+    id_bus = int(request.form['id_bus']) if 'id_bus' in request.form and request.form['id_bus'] != '' else None
+    date_mise_service = request.form['date_mise_service']
+    date_retrait_service = request.form['date_retrait_service'] if 'date_retrait_service' in request.form else None
+    taille_reservoir = request.form['taille_reservoir']
+    id_modele_reservoir = request.form['id_modele_reservoir']
+    position_dans_bus = request.form['position_dans_bus'] if 'position_dans_bus' in request.form else None
+    nb_cycles_reels = request.form['nb_cycles_reels']
+
+    # Execute the SQL query
+    cursor.execute(requests.INSERT_NEW_RESERVOIR, (
+        id_bus,
+        date_mise_service,
+        None if date_retrait_service is None or date_retrait_service == '' else date_retrait_service,
+        taille_reservoir,
+        id_modele_reservoir,
+        position_dans_bus,
+        nb_cycles_reels
+    ))
+
+    # Commit the changes to the database
+    get_db().commit()
+
+    return redirect('/reservoirs/show')
+
+
+@app.route('/reservoirs/delete', methods=["GET"])
+def delete_reservoir():
+    # Retrieve form data from request.args
+    id_reservoir = request.args.get('id_reservoir')
+
+    print(id_reservoir)
+
+    #TODO : ajouter message flash
+    # https://cours-info.iut-bm.univ-fcomte.fr/upload/perso/77/rs_S1_BDD/bdd1/S1_BDD_pymysql_tp2_flask.html
+
+    cursor = get_db().cursor()
+    cursor.execute(requests.DELETE_RESERVOIR, id_reservoir)
+    get_db().commit()
+
+    return redirect('/reservoirs/show')
+
+
+@app.route('/reservoirs/edit', methods=["POST"])
+def edit_reservoir():
+    cursor = get_db().cursor()
+
+    # Retrieve form data
+    id_bus = request.form['id_bus'] if 'id_bus' in request.form else None
+    id_reservoir = request.form['id_reservoir']
+    date_mise_service = request.form['date_service_' + id_reservoir]
+    date_retrait_service = request.form['date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
+    taille_reservoir = request.form['taille_reservoir_' + id_reservoir]
+    id_modele_reservoir = request.form['modele_reservoir_' + id_reservoir]
+    position_dans_bus = request.form['position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
+    nb_cycles_reels = request.form['cycle_reel_' + id_reservoir]
+
+    #TODO : ajouter print + ajouter message flash
+    # https://cours-info.iut-bm.univ-fcomte.fr/upload/perso/77/rs_S1_BDD/bdd1/S1_BDD_pymysql_tp2_flask.html
+
+    # Edit in the database
+    cursor.execute(requests.EDIT_RESERVOIR, (
+        None if id_bus is None or id_bus == '' else id_bus,
+        date_mise_service,
+        None if date_retrait_service is None or date_retrait_service == '' else date_retrait_service,
+        taille_reservoir,
+        id_modele_reservoir,
+        position_dans_bus,
+        nb_cycles_reels,
+        id_reservoir
+    ))
+
+    get_db().commit()
+
+    return redirect('/reservoirs/show')
+
+
 @app.route('/reservoirs/etat')
 def etat_reservoirs():
     return render_template('reservoirs/etat_reservoirs.html')
