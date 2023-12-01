@@ -122,7 +122,11 @@ def delete_reservoir():
     # https://cours-info.iut-bm.univ-fcomte.fr/upload/perso/77/rs_S1_BDD/bdd1/S1_BDD_pymysql_tp2_flask.html
 
     cursor = get_db().cursor()
+    # Delete associated controle records
+    cursor.execute(requests.DELETE_CONTROLES, id_reservoir)
+    # Delete the reservoir
     cursor.execute(requests.DELETE_RESERVOIR, id_reservoir)
+
     get_db().commit()
 
     return redirect('/reservoirs/show')

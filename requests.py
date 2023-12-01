@@ -151,6 +151,7 @@ INSERT_NEW_RESERVOIR = """INSERT INTO Reservoir (
 VALUE (%s, %s, %s, %s, %s, %s, %s);"""
 
 DELETE_RESERVOIR = """DELETE FROM Reservoir WHERE id_reservoir = %s;"""
+DELETE_CONTROLES = """DELETE FROM Controle WHERE id_reservoir = %s;""" # CLE ETRANGERE
 
 EDIT_RESERVOIR = """UPDATE Reservoir
 SET
