@@ -256,12 +256,17 @@ def delete_bus():
     bus_name = cursor.fetchone() or {"nom_bus": f"ID({id_bus})"}
 
     # Delete from database
-    cursor.execute(requests.DELETE_BUS, id_bus)
-    get_db().commit()
+    try:
+        cursor.execute(requests.DELETE_BUS, id_bus)
+        get_db().commit()
 
-    flash(f"Le bus {bus_name['nom_bus']} a été supprimé.", "success")
+        flash(f"Le bus {bus_name['nom_bus']} a été supprimé.", "success")
 
-    return redirect('/flottes_bus/show')
+        return redirect('/flottes_bus/show')
+    except pymysql.err.IntegrityError:
+        flash(f"Le bus {bus_name['nom_bus']} ne peut pas être supprimé.\nVeillez à supprimer ou dé-lier tout réservoir associé à ce bus.", "error")
+
+        return redirect('/flottes_bus/show')
 
 
 @app.route('/flottes_bus/bus/edit', methods=["POST"])
