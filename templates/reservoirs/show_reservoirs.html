@@ -333,12 +333,12 @@
                                                         <label for="modele_reservoir_{{ reservoir['id_reservoir'] }}">Modèle du réservoir</label>
                                                         <select class="form-select" id="modele_reservoir_{{ reservoir['id_reservoir'] }}" name="modele_reservoir_{{ reservoir['id_reservoir'] }}" required>
                                                             {% for modele in modeles_reservoirs %}
-                                                                    {% if modele["id_modele_reservoir"] == reservoir["id_modele_reservoir"] %}
-                                                                        <option selected value="{{ modele['id_modele_reservoir'] }}">{{ reservoir["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
-                                                                    {% else %}
-                                                                        <option value="{{ modele['id_modele_reservoir'] }}">{{ reservoir["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
-                                                                    {% endif %}
-                                                                {% endfor %}
+                                                                {% if modele["id_modele_reservoir"] == reservoir["id_modele_reservoir"] %}
+                                                                    <option selected value="{{ modele['id_modele_reservoir'] }}">{{ modele["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
+                                                                {% else %}
+                                                                    <option value="{{ modele['id_modele_reservoir'] }}">{{ modele["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
                                                         </select>
                                                     </div>
                                                     <div class="field">
