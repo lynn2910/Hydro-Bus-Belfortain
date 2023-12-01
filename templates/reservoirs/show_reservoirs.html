@@ -23,7 +23,7 @@
                                     <h3>{{ bus["nom_bus"]}}</h3>
                                 </summary>
                                 <div class="list">
-                                    {% if reservoirs_bus|length == 0 %}
+                                    {% if reservoirs_bus | selectattr("id_bus", "equalto", bus["id_bus"]) | list | length == 0 %}
                                         <p>Aucun réservoir pour le bus n'est recensé</p>
                                     {% else %}
                                         {% for reservoir_bus in reservoirs_bus %}

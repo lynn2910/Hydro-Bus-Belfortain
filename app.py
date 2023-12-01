@@ -64,6 +64,7 @@ def show_reservoirs():
 
     cursor.execute(requests.GET_RESERVOIRS_WITHOUT_BUS)
     reservoirs = cursor.fetchall()
+    print(reservoirs)
 
     cursor.execute(requests.GET_RESERVOIRS_MODELS)
     modeles_reservoirs = cursor.fetchall()
@@ -170,7 +171,64 @@ def edit_reservoir():
 
 @app.route('/reservoirs/etat')
 def etat_reservoirs():
-    return render_template('reservoirs/etat_reservoirs.html')
+    filter_word = request.args.get("filter_word")
+
+    date_mise_service = request.args.get("date_mise_service")
+    date_retrait_service = request.args.get("date_retrait_service")
+
+    taille_reservoir_min = request.args.get("taille_reservoir_min")
+    taille_reservoir_max = request.args.get("taille_reservoir_max")
+
+    modele_filter = request.args.get("modele_filter") or None
+    position_filter = request.args.get("position_filter") or None
+
+    cycle_reel_min = request.args.get("cycle_reel_min")
+    cycle_reel_max = request.args.get("cycle_reel_max")
+
+    cursor = get_db().cursor()
+    cursor.execute(
+        requests.GET_RESERVOIRS_FILTER,
+        (
+            f"%{filter_word}%" if filter_word is not None else "%",
+            date_mise_service or "1090-01-01",
+            date_retrait_service or "3000-01-01",
+            modele_filter,
+            position_filter,
+            int(taille_reservoir_min) if taille_reservoir_min else 0,
+            int(taille_reservoir_max) if taille_reservoir_max else 100,
+            int(cycle_reel_min) if cycle_reel_min else 0,
+            int(cycle_reel_max) if cycle_reel_max else 100000
+        )
+    )
+    all_reservoirs = cursor.fetchall()
+
+    cursor = get_db().cursor()
+    cursor.execute(requests.GET_BUSES)
+    buses = cursor.fetchall()
+
+    cursor.execute(requests.GET_RESERVOIRS_MODELS)
+    modeles_reservoirs = cursor.fetchall()
+
+    cursor.execute(requests.GET_RESERVOIRS_POSITION)
+    positions = cursor.fetchall()
+
+    return render_template(
+        'reservoirs/etat_reservoirs.html',
+        buses=buses,
+        all_reservoirs=all_reservoirs,
+        modeles_reservoirs=modeles_reservoirs,
+        positions=positions,
+        # Filter
+        filter_word=filter_word or "",
+        date_mise_service=date_mise_service or '',
+        date_retrait_service=date_retrait_service or '',
+        taille_reservoir_min=taille_reservoir_min or '',
+        taille_reservoir_max=taille_reservoir_max or '',
+        modele_filter=modele_filter or '',
+        position_filter=position_filter or '',
+        cycle_reel_min=cycle_reel_min or '',
+        cycle_reel_max=cycle_reel_max or ''
+        )
 
 
 @app.route('/consommation/show')
@@ -243,7 +301,7 @@ def create_bus():
 
     get_db().commit()
 
-    flash(f"Les modifications du bus '{nom_bus}' ont été appliquées.", "success")
+    flash(f"L'ajout du bus '{nom_bus}' a été appliqué.", "success")
 
     return redirect('/flottes_bus/show')
 

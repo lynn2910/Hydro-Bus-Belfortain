@@ -120,8 +120,8 @@ VALUES
     ( 5,  7, 'Haut - droit', '2021-03-21', NULL, 14934, 1, 1),
     # Bus n°2
     ( 2,  7, 'Bas - droit', '2022-04-12', NULL, 12597, 2, 2),
-    ( 7,  7, 'Bas gauche', '2022-04-12', NULL, 12597, 2, 2),
-    # Bus n°3
+    ( 7,  7, 'Bas - gauche', '2022-04-12', NULL, 12597, 2, 2),
+    # Bus n°3c
     ( 3, 11, 'Haut - milieu', '2022-09-30', NULL, 6621, 3, 2),
     ( 6, 11, 'Bas - milieu', '2022-09-30', NULL, 6621, 3, 2),
     # Sans bus

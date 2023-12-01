@@ -166,5 +166,40 @@ WHERE
     id_reservoir = %s;"""
 
 # FILTER RESERVOIRS
-
-# TODO : faire les filtres
+GET_RESERVOIRS_FILTER = """SELECT
+    Reservoir.id_reservoir,
+    Reservoir.id_bus,
+    Reservoir.id_modele_reservoir,
+    Reservoir.taille_reservoir,
+    Reservoir.position_dans_bus,
+    Reservoir.date_mise_service,
+    Reservoir.date_retrait_service,
+    Reservoir.nb_cycles_reels,
+    COUNT(C.id_controle) AS nb_controle,
+    M.modele_reservoir
+FROM Reservoir
+LEFT JOIN Controle AS C ON C.id_reservoir = Reservoir.id_reservoir
+LEFT JOIN Modele_reservoir AS M ON M.id_modele_reservoir = Reservoir.id_modele_reservoir
+WHERE
+    (Reservoir.id_reservoir LIKE %s)
+    AND (Reservoir.date_mise_service BETWEEN %s AND %s)
+    AND Reservoir.id_modele_reservoir = IFNULL(%s, Reservoir.id_modele_reservoir)
+    AND Reservoir.position_dans_bus = IFNULL(%s, Reservoir.position_dans_bus)
+GROUP BY
+    Reservoir.id_reservoir,
+    Reservoir.id_bus,
+    Reservoir.id_modele_reservoir,
+    Reservoir.taille_reservoir,
+    Reservoir.position_dans_bus,
+    Reservoir.date_mise_service,
+    Reservoir.date_retrait_service,
+    Reservoir.nb_cycles_reels,
+    M.modele_reservoir
+HAVING
+    (
+        SUM(COALESCE(Reservoir.taille_reservoir, 0)) >= %s
+        AND SUM(COALESCE(Reservoir.taille_reservoir, 0)) <= %s
+    ) AND (
+        AVG(COALESCE(Reservoir.nb_cycles_reels, 0)) >= %s
+        AND AVG(COALESCE(Reservoir.nb_cycles_reels, 0)) <= %s
+    );"""
