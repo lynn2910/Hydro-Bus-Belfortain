@@ -121,12 +121,9 @@ VALUES
     # Bus n°2
     ( 2,  7, 'Bas - droit', '2022-04-12', NULL, 12597, 2, 2),
     ( 7,  7, 'Bas - gauche', '2022-04-12', NULL, 12597, 2, 2),
-    # Bus n°3c
+    # Bus n°3
     ( 3, 11, 'Haut - milieu', '2022-09-30', NULL, 6621, 3, 2),
-    ( 6, 11, 'Bas - milieu', '2022-09-30', NULL, 6621, 3, 2),
-    # Sans bus
-    ( 4, 14, NULL, '2022-09-28', NULL, 17605, NULL, 2),
-    ( 8, 8, NULL, '2022-09-28', NULL, 17605, NULL, 1);
+    ( 6, 11, 'Bas - milieu', '2022-09-30', NULL, 6621, 3, 2);
 
 INSERT INTO Controle
     (date_controle, prix,  analyse_rendue, id_reservoir)

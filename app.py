@@ -204,7 +204,6 @@ def etat_reservoirs():
     all_reservoirs = cursor.fetchall()
     print(all_reservoirs)
 
-    cursor = get_db().cursor()
     cursor.execute(requests.GET_BUSES)
     buses = cursor.fetchall()
 
