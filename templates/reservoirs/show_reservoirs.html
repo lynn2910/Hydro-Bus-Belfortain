@@ -300,7 +300,7 @@
                                                     <div class="field">
                                                         <label for="id_bus">Id & Nom du bus</label>
                                                         <select class="form-select" id="id_bus" name="id_bus">
-                                                        <option selected value="">Pas de bus</option>
+                                                        <option selected value="">Aucun bus</option>
                                                         {% for bus in buses %}
                                                             <option value="{{ bus['id_bus'] }}">{{ bus["id_bus"] }} - {{ bus["nom_bus"] }}</option>
                                                         {% endfor %}
@@ -344,9 +344,13 @@
                                                     <div class="field">
                                                         <label for="position_reservoir_{{ reservoir['id_reservoir'] }}">Position du réservoir</label>
                                                         <select class="form-select" id="position_reservoir_{{ reservoir['id_reservoir'] }}" name="position_reservoir_{{ reservoir['id_reservoir'] }}">
-                                                            <option selected value="">Aucune position</option>
+                                                            {% set has_position = reservoir["position_dans_bus"] is not none and reservoir["position_dans_bus"] != '' %}
+                                                            <option {% if not has_position %}selected{% endif %} value="">Aucune position</option>
                                                             {% set unique_position = {} %}
                                                             {% for position in positions %}
+                                                                {% if has_position and position["position_dans_bus"] == reservoir["position_dans_bus"] %}
+                                                                    <option selected value="{{ position['position_dans_bus'] }}">{{ position["position_dans_bus"] }}</option>
+                                                                {% endif %}
                                                                 {% if position["position_dans_bus"] not in unique_position and position["position_dans_bus"] is not none and position["position_dans_bus"] != '' %}
                                                                     <option value="{{ position['position_dans_bus'] }}">{{ position['position_dans_bus'] }}</option>
                                                                     {% set _ = unique_position.update({position['position_dans_bus']: true}) %}
