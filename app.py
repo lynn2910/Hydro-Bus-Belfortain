@@ -194,6 +194,7 @@ def etat_reservoirs():
             date_retrait_service or "3000-01-01",
             modele_filter,
             position_filter,
+            f"%{filter_word}%" if filter_word is not None else "%",
             int(taille_reservoir_min) if taille_reservoir_min else 0,
             int(taille_reservoir_max) if taille_reservoir_max else 100,
             int(cycle_reel_min) if cycle_reel_min else 0,
@@ -201,6 +202,7 @@ def etat_reservoirs():
         )
     )
     all_reservoirs = cursor.fetchall()
+    print(all_reservoirs)
 
     cursor = get_db().cursor()
     cursor.execute(requests.GET_BUSES)
@@ -228,7 +230,7 @@ def etat_reservoirs():
         position_filter=position_filter or '',
         cycle_reel_min=cycle_reel_min or '',
         cycle_reel_max=cycle_reel_max or ''
-        )
+    )
 
 
 @app.route('/consommation/show')

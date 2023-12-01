@@ -185,6 +185,7 @@ WHERE
     AND (Reservoir.date_mise_service BETWEEN %s AND %s)
     AND Reservoir.id_modele_reservoir = IFNULL(%s, Reservoir.id_modele_reservoir)
     AND Reservoir.position_dans_bus = IFNULL(%s, Reservoir.position_dans_bus)
+    AND Reservoir.id_bus LIKE %s OR Reservoir.id_bus IS NULL
 GROUP BY
     Reservoir.id_reservoir,
     Reservoir.id_bus,
