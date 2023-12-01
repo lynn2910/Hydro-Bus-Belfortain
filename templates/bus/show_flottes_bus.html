@@ -77,7 +77,6 @@
                                     </div>
                                 </div>
                                 <p>Bus "{{ bus["nom_bus"] }}"</p>
-                                <!-- TODO faire le formulaire -->
                                 <form method="post" action="/flottes_bus/bus/edit" class="spaced">
                                     <input name="id_bus" type="text" hidden value="{{ bus["id_bus"] }}">
                                     <div class="field row_flex">
@@ -129,7 +128,6 @@
                                 <p>Bus "{{ bus["nom_bus"] }}"</p>
                                 <div class="row_flex action_buttons">
                                     <button type="button" class="cancel">Annuler</button>
-                                    <!-- TODO ajouter l'action en elle-même -->
                                     <form action="/flottes_bus/bus/delete" method="get">
                                         <input name="id_bus_delete" type="text" value="{{ bus["id_bus"] }}" hidden="hidden">
                                         <button type="submit">Supprimer</button>
@@ -150,34 +148,50 @@
                 <div class="big_docker full_width child row_flex no_border no_margin_padding">
                     <div class="big_docker full_width child auto_horizontal_margin no_left_margin fix_height">
                         <h2>Ajouter un Bus</h2>
-                        <!-- Valeurs du formulaire à récupérer ! -->
                         <form method="post" action="/flottes_bus/bus/new" class="spaced">
                             <div class="field row_flex">
                                 <label for="nom_bus">Nom du bus</label>
-                                <input type="text" id="nom_bus" name="nom_bus"  placeholder="Nom du bus">
+                                <input type="text"
+                                       id="nom_bus"
+                                       name="nom_bus"
+                                       placeholder="Nom du bus"
+                                       value="{{ add_nom_bus }}"
+                                       required>
                             </div>
                             <div class="field row_flex">
                                 <label for="date_service">Date d'achat</label>
-                                <input type="date" id="date_service" name="date_service">
+                                <input type="date"
+                                       id="date_service"
+                                       name="date_service"
+                                       value="{{ add_date_service }}"
+                                       required>
+                            </div>
+                            <div class="field row_flex">
+                                <label for="id_flotte">Flotte</label>
+                                <select class="form-select" id="id_flotte" name="id_flotte" required>
+                                    {% if add_id_flotte == '' %}
+                                        <option value="" selected="">Aucune flotte</option>
+                                    {% else %}
+                                        <option value="">Aucune flotte</option>
+                                    {% endif %}
+                                    {% for flotte in flottes %}
+                                        {% if flotte == add_id_flotte %}
+                                            <option selected="" value="{{ flotte["id_flotte"] }}">{{ flotte["nom_flotte"] }}</option>
+                                        {% else %}
+                                            <option value="{{ flotte["id_flotte"] }}">{{ flotte["nom_flotte"] }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="field row_flex">
                                   <label for="id_modele_bus">Modèle de bus</label>
                                   <select class="form-select" id="id_modele_bus" name="id_modele_bus" required>
-                                      <option value="-1" selected="">Modèle non-sélectionné</option>
+                                      <option value="" selected="">Modèle non-sélectionné</option>
                                       {% for model in bus_models %}
                                           <option value="{{ model["id_modele_bus"] }}">{{ model["nom_modele_bus"] }}</option>
                                       {% endfor %}
                                   </select>
                               </div>
-                            <div class="field row_flex">
-                                <label for="id_flotte">Flotte</label>
-                                <select class="form-select" id="id_flotte" name="id_flotte" required>
-                                    <option value="-1" selected="">Aucune flotte</option>
-                                    {% for flotte in flottes %}
-                                        <option value="{{ flotte["id_flotte"] }}">{{ flotte["nom_flotte"] }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
 
                             <button>Ajouter</button>
                         </form>

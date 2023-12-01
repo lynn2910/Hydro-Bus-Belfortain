@@ -71,7 +71,14 @@ def show_reservoirs():
     cursor.execute(requests.GET_RESERVOIRS_POSITION)
     positions = cursor.fetchall()
 
-    return render_template('reservoirs/show_reservoirs.html', buses=buses, reservoirs_bus=reservoirs_bus, reservoirs=reservoirs, modeles_reservoirs=modeles_reservoirs, positions=positions)
+    return render_template(
+        'reservoirs/show_reservoirs.html',
+        buses=buses,
+        reservoirs_bus=reservoirs_bus,
+        reservoirs=reservoirs,
+        modeles_reservoirs=modeles_reservoirs,
+        positions=positions
+    )
 
 
 @app.route('/reservoirs/new', methods=["POST"])
@@ -111,7 +118,7 @@ def delete_reservoir():
 
     print(id_reservoir)
 
-    #TODO : ajouter message flash
+    # TODO : ajouter message flash
     # https://cours-info.iut-bm.univ-fcomte.fr/upload/perso/77/rs_S1_BDD/bdd1/S1_BDD_pymysql_tp2_flask.html
 
     cursor = get_db().cursor()
@@ -129,13 +136,15 @@ def edit_reservoir():
     id_bus = request.form['id_bus'] if 'id_bus' in request.form else None
     id_reservoir = request.form['id_reservoir']
     date_mise_service = request.form['date_service_' + id_reservoir]
-    date_retrait_service = request.form['date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
+    date_retrait_service = request.form[
+        'date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
     taille_reservoir = request.form['taille_reservoir_' + id_reservoir]
     id_modele_reservoir = request.form['modele_reservoir_' + id_reservoir]
-    position_dans_bus = request.form['position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
+    position_dans_bus = request.form[
+        'position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
     nb_cycles_reels = request.form['cycle_reel_' + id_reservoir]
 
-    #TODO : ajouter print + ajouter message flash
+    # TODO : ajouter print + ajouter message flash
     # https://cours-info.iut-bm.univ-fcomte.fr/upload/perso/77/rs_S1_BDD/bdd1/S1_BDD_pymysql_tp2_flask.html
 
     # Edit in the database
@@ -189,42 +198,48 @@ def show_flottes_bus():
             "buses": fleet_buses
         })
 
-    return render_template('bus/show_flottes_bus.html', flottes=prepared_fleets, bus_models=bus_models)
+    return render_template(
+        'bus/show_flottes_bus.html',
+        flottes=prepared_fleets,
+        bus_models=bus_models,
+        add_nom_bus=request.args.get("nom_bus", ''),
+        add_date_service=request.args.get("date_service", ''),
+        add_id_flotte=request.args.get("nom_bus", ''),
+    )
 
 
 @app.route('/flottes_bus/bus/new', methods=["POST"])
 def create_bus():
-    id_flotte = int(request.form.get("id_flotte", -1))
-
-    if id_flotte < 0:
-        flash("La flotte n'existe pas. Veillez à sélectionner une flotte")
+    nom_bus = request.form.get("nom_bus", "")
+    if len(nom_bus) < 1:
+        flash("Le nom du bus doit être précisé", "error")
         return redirect('/flottes_bus/show')
+
+    date_achat = request.form.get("date_service", "")
+    try:
+        datetime.datetime.strptime(date_achat, '%Y-%m-%d')
+    except ValueError:
+        flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD", "error")
+        return redirect(f'/flottes_bus/show?nom_bus={nom_bus}')
+
+    id_flotte = int(request.form.get("id_flotte", -1))
+    if id_flotte < 0:
+        flash("La flotte n'existe pas. Veillez à sélectionner une flotte", "error")
+        return redirect(f'/flottes_bus/show?nom_bus={nom_bus}&date_service={date_achat}')
 
     id_modele_bus = int(request.form.get("id_modele_bus", -1))
 
     if id_modele_bus < 0:
-        flash("Le modèle de bus n'existe pas. Veillez à sélectionner un modèle de bus")
-        return redirect('/flottes_bus/show')
-
-    date_service = request.form.get("date_service", "")
-
-    try:
-        datetime.datetime.strptime(date_service, '%Y-%m-%d')
-    except ValueError:
-        flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD")
-        return redirect('/flottes_bus/show')
-
-    nom_bus = request.form.get("nom_bus", "")
-
-    if len(nom_bus) < 1:
-        flash("Le nom du bus doit être précisé")
-        return redirect('/flottes_bus/show')
+        flash("Le modèle de bus n'existe pas. Veillez à sélectionner un modèle de bus", "error")
+        return redirect(f'/flottes_bus/show?nom_bus={nom_bus}&date_service={date_achat}&id_flotte={id_flotte}')
 
     # Add to database
     cursor = get_db().cursor()
-    cursor.execute(requests.INSERT_NEW_BUS, (nom_bus, date_service, id_flotte, id_modele_bus))
+    cursor.execute(requests.INSERT_NEW_BUS, (nom_bus, date_achat, id_flotte, id_modele_bus))
 
     get_db().commit()
+
+    flash(f"Les modifications du bus '{nom_bus}' ont été appliquées.", "success")
 
     return redirect('/flottes_bus/show')
 
@@ -244,7 +259,7 @@ def delete_bus():
     cursor.execute(requests.DELETE_BUS, id_bus)
     get_db().commit()
 
-    flash(f"Le bus {bus_name['nom_bus']} a été supprimé.")
+    flash(f"Le bus {bus_name['nom_bus']} a été supprimé.", "success")
 
     return redirect('/flottes_bus/show')
 
@@ -256,13 +271,13 @@ def edit_bus():
     id_flotte = int(request.form.get("id_flotte", -1))
 
     if id_flotte < 0:
-        flash("La flotte n'existe pas. Veillez à sélectionner une flotte")
+        flash("La flotte n'existe pas. Veillez à sélectionner une flotte", "error")
         return redirect('/flottes_bus/show')
 
     id_modele_bus = int(request.form.get("id_modele_bus", -1))
 
     if id_modele_bus < 0:
-        flash("Le modèle de bus n'existe pas. Veillez à sélectionner un modèle de bus")
+        flash("Le modèle de bus n'existe pas. Veillez à sélectionner un modèle de bus", "error")
         return redirect('/flottes_bus/show')
 
     date_service = request.form.get("date_service", "")
@@ -270,13 +285,13 @@ def edit_bus():
     try:
         datetime.datetime.strptime(date_service, '%Y-%m-%d')
     except ValueError:
-        flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD")
+        flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD", "error")
         return redirect('/flottes_bus/show')
 
     nom_bus = request.form.get("nom_bus", "")
 
     if len(nom_bus) < 1:
-        flash("Le nom du bus doit être précisé")
+        flash("Le nom du bus doit être précisé", "error")
         return redirect('/flottes_bus/show')
 
     # Edit in the database
@@ -284,7 +299,7 @@ def edit_bus():
     cursor.execute(requests.EDIT_BUS, (nom_bus, date_service, id_flotte, id_modele_bus, id_bus))
     get_db().commit()
 
-    flash(f"Les modifications du bus {nom_bus} ont été effectuées.")
+    flash(f"Les modifications du bus {nom_bus} ont été effectuées.", "success")
 
     return redirect('/flottes_bus/show')
 
@@ -322,8 +337,6 @@ def etat_flottes_bus():
     )
     buses = cursor.fetchall()
 
-    print(buses)
-
     cursor.execute(requests.GET_FLEETS)
     fleets = cursor.fetchall()
 
@@ -337,14 +350,14 @@ def etat_flottes_bus():
         flottes=fleets,
         # Filter
         filter_word=filter_word or "",
-        date_achat_min=date_achat_min,
-        date_achat_max=date_achat_max,
-        bus_model=bus_model,
-        flotte_filter=flotte,
-        distance_totale_min=distance_totale_min,
-        distance_totale_max=distance_totale_max,
-        conso_mensuelle_min=conso_mensuelle_min,
-        conso_mensuelle_max=conso_mensuelle_max
+        date_achat_min=date_achat_min or '',
+        date_achat_max=date_achat_max or '',
+        bus_model=bus_model or '',
+        flotte_filter=flotte or '',
+        distance_totale_min=distance_totale_min or '',
+        distance_totale_max=distance_totale_max or '',
+        conso_mensuelle_min=conso_mensuelle_min or '',
+        conso_mensuelle_max=conso_mensuelle_max or ''
     )
 
 
@@ -352,9 +365,15 @@ def etat_flottes_bus():
 def show_controles():
     return render_template('controles/show_controles.html')
 
+
 @app.route('/controles/etat')
 def etat_controles():
     return render_template('controles/etat_controles.html')
+
+
+@app.route('/consommation/show')
+def show_consommation():
+    return render_template('consommation/show_consommation.html')
 
 
 if __name__ == '__main__':

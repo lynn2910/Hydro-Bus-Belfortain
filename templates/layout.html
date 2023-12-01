@@ -21,9 +21,24 @@
 {% include('_nav.html') %}
 
 {% with messages = get_flashed_messages(with_categories=true) %}
- <!-- TODO ajouter les messages flashs -->
+    <div class="notifications">
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="notif {{category}}">
+                    <div class="header">
+                        <h4>{{ category }}</h4>
+                        <svg viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.3006 1.30057C-0.433532 3.0347 -0.433532 5.84622 1.3006 7.58034L17.2202 23.5L1.3006 39.4198C-0.433532 41.1538 -0.433532 43.9655 1.3006 45.6996C3.03469 47.4335 5.84625 47.4335 7.58032 45.6996L23.5 29.7796L39.4198 45.6996C41.1539 47.4335 43.9656 47.4335 45.6995 45.6996C47.4335 43.9655 47.4335 41.1538 45.6995 39.4198L29.7796 23.5L45.6995 7.58039C47.4335 5.84631 47.4335 3.03474 45.6995 1.30065C43.9651 -0.433479 41.1539 -0.433479 39.4198 1.30065L23.5 17.2202L7.58032 1.30057C5.84625 -0.433522 3.03469 -0.433522 1.3006 1.30057Z" fill="black"></path>
+                        </svg>
+                    </div>
+                    <div class="message">
+                        {{ message }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
 {% endwith %}
-
 {% block body %}
     <main>
         <h2>Bienvenue sur la page d'accueil</h2>

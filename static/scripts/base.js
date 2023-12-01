@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+    manage_notifications_popup();
     manage_keyboard_input();
     manage_popups();
 })
@@ -188,4 +189,23 @@ function manage_keyboard_input(){
             }
         }
     )
+}
+
+
+function manage_notifications_popup(){
+    let notifications = document.querySelectorAll(".notifications .notif");
+
+    if (notifications.length < 1)
+        return;
+
+    notifications.forEach(function(elm){
+        let x = elm.querySelector(".header svg");
+        if (!x)
+            console.warn("No close cross were found for the elm: ", elm)
+
+        x.addEventListener(
+            "click",
+            () => elm.remove()
+        )
+    })
 }
