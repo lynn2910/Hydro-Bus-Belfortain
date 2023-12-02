@@ -215,17 +215,17 @@ main {
     height: 40px;
 }
 
-.list details.card .body .fuck_you {
+.list details.card .body .i_love_you {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
 }
 
-.list details.card .body .fuck_you .card_actions {
+.list details.card .body .i_love_you .card_actions {
     margin-bottom: auto;
 }
 
-.list details.card .body .fuck_you .card_actions svg {
+.list details.card .body .i_love_you .card_actions svg {
     height: 24px;
     width: 24px;
     padding: 5px;
@@ -235,7 +235,7 @@ main {
     transition: background 0.15s ease-in-out;
 }
 
-.list details.card .body .fuck_you .card_actions svg:hover {
+.list details.card .body .i_love_you .card_actions svg:hover {
     transition: background 0.15s ease-in-out;
     background: rgba(108, 174, 231, 0.25);
 }

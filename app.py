@@ -109,6 +109,9 @@ def new_reservoir():
     # Commit the changes to the database
     get_db().commit()
 
+    id_reservoir = cursor.lastrowid
+    flash(f"L'ajout du Réservoir n°{id_reservoir} a été appliqué.", "success")
+
     return redirect('/reservoirs/show')
 
 
@@ -119,9 +122,6 @@ def delete_reservoir():
 
     print(id_reservoir)
 
-    # TODO : ajouter message flash
-    # https://cours-info.iut-bm.univ-fcomte.fr/upload/perso/77/rs_S1_BDD/bdd1/S1_BDD_pymysql_tp2_flask.html
-
     cursor = get_db().cursor()
     # Delete associated controle records
     cursor.execute(requests.DELETE_CONTROLES, id_reservoir)
@@ -129,6 +129,8 @@ def delete_reservoir():
     cursor.execute(requests.DELETE_RESERVOIR, id_reservoir)
 
     get_db().commit()
+
+    flash(f"Le réservoir n°{id_reservoir} a été supprimé.", "success")
 
     return redirect('/reservoirs/show')
 
@@ -141,16 +143,11 @@ def edit_reservoir():
     id_bus = request.form['id_bus'] if 'id_bus' in request.form else None
     id_reservoir = request.form['id_reservoir']
     date_mise_service = request.form['date_service_' + id_reservoir]
-    date_retrait_service = request.form[
-        'date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
+    date_retrait_service = request.form['date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
     taille_reservoir = request.form['taille_reservoir_' + id_reservoir]
     id_modele_reservoir = request.form['modele_reservoir_' + id_reservoir]
-    position_dans_bus = request.form[
-        'position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
+    position_dans_bus = request.form['position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
     nb_cycles_reels = request.form['cycle_reel_' + id_reservoir]
-
-    # TODO : ajouter print + ajouter message flash
-    # https://cours-info.iut-bm.univ-fcomte.fr/upload/perso/77/rs_S1_BDD/bdd1/S1_BDD_pymysql_tp2_flask.html
 
     # Edit in the database
     cursor.execute(requests.EDIT_RESERVOIR, (
@@ -164,6 +161,8 @@ def edit_reservoir():
         id_reservoir
     ))
 
+    flash(f"Le réservoir a bien été modifié avec id_bus: {id_bus}, id_reservoir: {id_reservoir}, date_mise_service: {date_mise_service}, date_retrait_service: {date_retrait_service}, taille_reservoir: {taille_reservoir}, id_modele_reservoir: {id_modele_reservoir}, position_dans_bus: {position_dans_bus}, nb_cycles_reels: {nb_cycles_reels}.", "success")
+
     get_db().commit()
 
     return redirect('/reservoirs/show')
@@ -173,17 +172,41 @@ def edit_reservoir():
 def etat_reservoirs():
     filter_word = request.args.get("filter_word")
 
-    date_mise_service = request.args.get("date_mise_service")
-    date_retrait_service = request.args.get("date_retrait_service")
+    from datetime import datetime
+
+    date_mise_service_str = request.args.get("date_mise_service")
+    date_retrait_service_str = request.args.get("date_retrait_service")
+
+    if date_mise_service_str:
+        date_mise_service = datetime.strptime(date_mise_service_str, "%Y-%m-%d").date()
+    else:
+        date_mise_service = None
+
+    if date_retrait_service_str:
+        date_retrait_service = datetime.strptime(date_retrait_service_str, "%Y-%m-%d").date()
+    else:
+        date_retrait_service = None
+
+    if date_mise_service is not None and date_retrait_service is not None and date_mise_service > date_retrait_service:
+        flash("La date de mise en service doit être inférieure à la date de retrait.", "error")
+        return redirect('/reservoirs/etat')
 
     taille_reservoir_min = request.args.get("taille_reservoir_min")
     taille_reservoir_max = request.args.get("taille_reservoir_max")
+
+    if taille_reservoir_min and taille_reservoir_max and int(taille_reservoir_min) > int(taille_reservoir_max):
+        flash("La taille minimale du réservoir doit être inférieure à la taille maximale.", "error")
+        return redirect('/reservoirs/etat')
 
     modele_filter = request.args.get("modele_filter") or None
     position_filter = request.args.get("position_filter") or None
 
     cycle_reel_min = request.args.get("cycle_reel_min")
     cycle_reel_max = request.args.get("cycle_reel_max")
+
+    if cycle_reel_min and cycle_reel_max and int(cycle_reel_min) > int(cycle_reel_max):
+        flash("Le cycle réel minimum doit être inférieur au cycle réel maximum.", "error")
+        return redirect('/reservoirs/etat')
 
     cursor = get_db().cursor()
     cursor.execute(
@@ -213,6 +236,10 @@ def etat_reservoirs():
     cursor.execute(requests.GET_RESERVOIRS_POSITION)
     positions = cursor.fetchall()
 
+    if any([filter_word, date_mise_service_str, date_retrait_service_str, taille_reservoir_min, taille_reservoir_max,
+            modele_filter, position_filter, cycle_reel_min, cycle_reel_max]):
+        flash(f"La requête a été prise en compte.", "success")
+
     return render_template(
         'reservoirs/etat_reservoirs.html',
         buses=buses,
@@ -230,6 +257,7 @@ def etat_reservoirs():
         cycle_reel_min=cycle_reel_min or '',
         cycle_reel_max=cycle_reel_max or ''
     )
+
 
 
 @app.route('/consommation/show')
