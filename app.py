@@ -88,12 +88,29 @@ def new_reservoir():
 
     # Retrieve form data
     id_bus = int(request.form['id_bus']) if 'id_bus' in request.form and request.form['id_bus'] != '' else None
-    date_mise_service = request.form['date_mise_service']
-    date_retrait_service = request.form['date_retrait_service'] if 'date_retrait_service' in request.form else None
     taille_reservoir = request.form['taille_reservoir']
     id_modele_reservoir = request.form['id_modele_reservoir']
     position_dans_bus = request.form['position_dans_bus'] if 'position_dans_bus' in request.form else None
     nb_cycles_reels = request.form['nb_cycles_reels']
+
+    from datetime import datetime
+
+    date_mise_service_str = request.form['date_mise_service']
+    date_retrait_service_str = request.form['date_retrait_service'] if 'date_retrait_service' in request.form else None
+
+    if date_mise_service_str:
+        date_mise_service = datetime.strptime(date_mise_service_str, "%Y-%m-%d").date()
+    else:
+        date_mise_service = None
+
+    if date_retrait_service_str:
+        date_retrait_service = datetime.strptime(date_retrait_service_str, "%Y-%m-%d").date()
+    else:
+        date_retrait_service = None
+
+    if date_mise_service is not None and date_retrait_service is not None and date_mise_service > date_retrait_service:
+        flash("La date de mise en service doit être inférieure à la date de retrait.", "error")
+        return redirect('/reservoirs/show')
 
     # Execute the SQL query
     cursor.execute(requests.INSERT_NEW_RESERVOIR, (
@@ -110,7 +127,7 @@ def new_reservoir():
     get_db().commit()
 
     id_reservoir = cursor.lastrowid
-    flash(f"L'ajout du Réservoir n°{id_reservoir} a été appliqué.", "success")
+    flash(f"L'ajout du Réservoir n°{id_reservoir} a été appliqué avec id_bus: {id_bus}, id_reservoir: {id_reservoir}, date_mise_service: {date_mise_service}, date_retrait_service: {date_retrait_service}, taille_reservoir: {taille_reservoir}, id_modele_reservoir: {id_modele_reservoir}, position_dans_bus: {position_dans_bus}, nb_cycles_reels: {nb_cycles_reels}.", "success")
 
     return redirect('/reservoirs/show')
 
