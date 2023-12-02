@@ -259,7 +259,6 @@ def etat_reservoirs():
     )
 
 
-
 @app.route('/consommation/show')
 def modeles_reservoirs():
     return render_template('consommation/show_consommation.html')
