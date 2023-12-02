@@ -458,8 +458,88 @@ def etat_flottes_bus():
 
 @app.route('/controles/show')
 def show_controles():
-    return render_template('controles/show_controles.html')
+    cursor = get_db().cursor()
+    cursor.execute(requests.GET_CONTROLE)
+    controles = cursor.fetchall()
 
+    cursor.execute(requests.GET_RESERVOIRS_MODELS)
+    modeles_reservoirs = cursor.fetchall()
+
+    return render_template('controles/show_controles.html',
+                           controles = controles,
+                           modeles_reservoirs = modeles_reservoirs)
+
+@app.route('/controles/new', methods=['POST'])
+def new_controle():
+    cursor = get_db().cursor()
+
+    # Retrieve form data
+    date_controle = request.form['date_controle_2']
+    description = request.form['description_2'] if 'description_2' in request.form else None
+    id_modele_reservoir = request.form['id_modele_reservoir']
+    prix = request.form['prix_controle_2']
+
+    cursor.execute(requests.INSERT_NEW_CONTROLE, (
+        date_controle,
+        description,
+        id_modele_reservoir,
+        prix
+    ))
+
+    # Commit the changes to the database
+    get_db().commit()
+
+    id_controle = cursor.lastrowid
+    flash(f"L'ajout du controle n°{id_controle} a été appliqué.", "success")
+
+    return redirect('/controles/show')
+
+
+@app.route('/controles/delete', methods=["GET"])
+def delete_controle():
+    # Retrieve form data from request.args
+    id_controle = request.args.get('id_controle')
+
+    print(id_controle)
+
+    cursor = get_db().cursor()
+    # Delete the control
+    cursor.execute(requests.DELETE_CONTROLE, (id_controle,))
+
+    get_db().commit()
+
+    flash(f"Le controle n°{id_controle} a été supprimé.", "success")
+
+    print(f"Avant la redirection : {id_controle}")
+    return redirect('/controles/show')
+
+@app.route('/controles/edit', methods=["POST"])
+def edit_controles():
+    id_controle = request.args.get('id_controle')
+    print(id_controle)
+
+    cursor = get_db().cursor()
+
+    # Retrieve form data
+    date_controle = request.form['date_controle_2'+id_controle]
+    description = request.form['description_2'+id_controle] if 'description_2' in request.form else None
+    id_modele_reservoir = request.form['id_modele_reservoir'+id_controle]
+    prix = request.form['prix_controle_2'+id_controle]
+
+    # Edit in the database
+    cursor.execute(requests.EDIT_CONTROLE, (
+        date_controle,
+        description,
+        id_modele_reservoir,
+        prix,
+        id_controle
+    ))
+
+    flash(f"Le contrôle n°{id_controle} a bien été modifié avec date: {date_controle}, description: {description}, id_modele_reservoir: {id_modele_reservoir}, prix: {prix}", "success")
+
+    get_db().commit()
+
+    return redirect('/controles/show')
 
 @app.route('/controles/etat')
 def etat_controles():

@@ -204,3 +204,43 @@ HAVING
         AVG(COALESCE(Reservoir.nb_cycles_reels, 0)) >= %s
         AND AVG(COALESCE(Reservoir.nb_cycles_reels, 0)) <= %s
     );"""
+
+#
+#
+# Contrôles
+#
+#
+
+#show controles
+GET_CONTROLE ="""SELECT
+    Controle.id_controle,
+    Controle.date_controle,
+    Controle.analyse_rendue,
+    Reservoir.id_reservoir,
+    Reservoir.id_modele_reservoir,
+    Modele_reservoir.modele_reservoir
+FROM
+    Controle
+INNER JOIN Reservoir ON Controle.id_reservoir = Reservoir.id_reservoir
+INNER JOIN Modele_reservoir ON Reservoir.id_modele_reservoir = Modele_reservoir.id_modele_reservoir;
+"""
+
+#add controle
+INSERT_NEW_CONTROLE = """INSERT INTO controle(
+date_controle,
+analyse_rendue,
+id_reservoir,
+prix)
+VALUES(%s,%s,%s,%s)"""
+
+DELETE_CONTROLE = """DELETE FROM Controle WHERE id_controle = %s;"""
+
+EDIT_CONTROLE = """UPDATE controle
+SET
+    date_controle = %s,
+    analyse_rendue = %s,
+    id_reservoir = %s,
+    prix = %s
+WHERE
+    id_controle = %s;"""
+
