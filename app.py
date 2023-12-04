@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from flask import Flask, render_template, g, request, redirect, flash
 import pymysql.cursors

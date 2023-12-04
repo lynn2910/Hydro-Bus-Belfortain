@@ -18,7 +18,6 @@ body.popup_opened {
 }
 
 main {
-    /* FIXME mettre la bonne taille de la navbar (+ 20px) */
     margin: 90px 20px 20px 20px;
 }
 
@@ -212,8 +211,10 @@ main {
     flex-direction: row;
     align-items: center;
 
-    height: 40px;
+    min-height: 40px;
+    height: fit-content;
 }
+
 
 .list details.card .body .i_love_you {
     display: flex;
@@ -249,7 +250,29 @@ main {
     margin: auto 0 auto auto;
     font-weight: lighter;
     text-align: right;
+
+    word-wrap: anywhere;
 }
+
+@media (max-width: 1200px) {
+    .list details.card summary {
+        font-size: 1em;
+    }
+
+    .list details.card .body .info {
+        width: 100%;
+    }
+
+    .list details.card .body .info p {
+        max-width: inherit;
+    }
+
+    .list details.card .body {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 
 .list details.card .popup {
     position: fixed;

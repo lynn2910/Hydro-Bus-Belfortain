@@ -122,3 +122,10 @@ nav .buttons ul li:hover ul li:hover a {
     color: rgba(0, 0, 0, 0.6);
     transition: color 0.1s ease-in-out;
 }
+
+@media (max-width: 1200px) {
+        nav .buttons {
+            margin-left: 90px;
+            width: calc(100% - 200px - (var(--navbar-height) / 2));
+        }
+}

@@ -123,10 +123,10 @@
                 <div class="big_docker full_width child auto_horizontal_margin no_left_margin">
                     <h2>Ajouter un contrôle</h2>
                     <!-- Valeurs du formulaire à récupérer ! -->
-                    <form method="post", action="/controles/new">
+                    <form method="post" id="add_controle" action="/controles/new">
                         <div class="field row_flex">
                             <label for="description_2">Compte rendu du contrôle</label>
-                            <textarea name="description_2" id="description_2" cols="30" rows="10"
+                            <textarea maxlength="200" name="description_2" id="description_2" cols="30" rows="10"
                                       class="compte_rendu_area"></textarea>
                         </div>
                         <div class="field row_flex">
