@@ -582,7 +582,7 @@ def etat_controles():
     prix_max = request.args.get("prix_controle_max")
 
     modele_reservoir = request.args.get("modele_reservoir")
-
+    print(filter_id)
     cursor = get_db().cursor()
     cursor.execute(requests.GET_CONTROLE_FILTER,
                    (filter_id,

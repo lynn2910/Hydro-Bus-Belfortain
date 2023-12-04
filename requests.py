@@ -222,7 +222,8 @@ GET_CONTROLE ="""SELECT
 FROM
     Controle
 INNER JOIN Reservoir ON Controle.id_reservoir = Reservoir.id_reservoir
-INNER JOIN Modele_reservoir ON Reservoir.id_modele_reservoir = Modele_reservoir.id_modele_reservoir;
+INNER JOIN Modele_reservoir ON Reservoir.id_modele_reservoir = Modele_reservoir.id_modele_reservoir
+ORDER BY Controle.id_controle;
 """
 
 #add controle
