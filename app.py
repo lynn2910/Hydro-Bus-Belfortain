@@ -611,7 +611,88 @@ def etat_controles():
 
 @app.route('/consommation/show')
 def show_consommation():
-    return render_template('consommation/show_consommation.html')
+    cursor = get_db().cursor()
+    cursor.execute(requests.GET_CONSOMMATION)
+    consommation = cursor.fetchall()
+
+    cursor.execute(requests.BUSES_INSIDE_FLEETS)
+    buses = cursor.fetchall()
+
+    return render_template('consommation/show_consommation.html',
+                           consommation = consommation,
+                           buses = buses)
+
+@app.route('/consommation/new', methods=['POST'])
+def new_consommation():
+    cursor = get_db().cursor()
+
+    # Retrieve form data
+    date_consommation = request.form['date_consommation_2']
+    consommation_hydrogene = request.form['qt_hydrogène_2'] if 'qt_hydrogène_2' in request.form else None
+    kilometres_parcourus = request.form['distance_conso_2']
+    id_bus = request.form['nom_bus']
+
+    cursor.execute(requests.INSERT_NEW_CONTROLE, (
+        date_consommation,
+        consommation_hydrogene,
+        kilometres_parcourus,
+        id_bus
+    ))
+
+    # Commit the changes to the database
+    get_db().commit()
+
+    id_consommation = cursor.lastrowid
+    flash(f"L'ajout de la consommation n°{id_consommation} a été appliqué.", "success")
+
+    return redirect('/consommation/show')
+
+
+@app.route('/consommation/delete', methods=["GET"])
+def delete_consommation():
+    # Retrieve form data from request.args
+    id_consommation = request.args.get('id_consommation')
+
+    print(id_consommation)
+
+    cursor = get_db().cursor()
+    # Delete the control
+    cursor.execute(requests.DELETE_CONSOMMATIONS, (id_consommation,))
+
+    get_db().commit()
+
+    flash(f"La consommation n°{id_consommation} a été supprimé.", "success")
+
+    print(f"Avant la redirection : {id_consommation}")
+    return redirect('/consommation/show')
+
+@app.route('/consommation/edit', methods=["POST"])
+def edit_consommation():
+    id_consommation = request.args.get('id_consommation')
+    print(id_consommation)
+
+    cursor = get_db().cursor()
+
+    # Retrieve form data
+    date_consommation = request.form['date_consommation_2'+id_consommation]
+    consommation_hydrogene = request.form['qt_hydrogène_2'+id_consommation if 'qt_hydrogène_2' in request.form else None]
+    kilometres_parcourus = request.form['distance_conso_2'+id_consommation]
+    id_bus = request.form['nom_bus'+id_consommation]
+
+    # Edit in the database
+    cursor.execute(requests.EDIT_CONTROLE, (
+        date_consommation,
+        consommation_hydrogene,
+        kilometres_parcourus,
+        id_bus,
+        id_consommation
+    ))
+
+    flash(f"La consommation n°{id_consommation} a bien été modifié avec date: {date_consommation}, qt_hydrogène: {consommation_hydrogene}, distance_conso: {kilometres_parcourus}, nom_bus: {id_bus}", "success")
+
+    get_db().commit()
+
+    return redirect('/consommation/show')
 
 
 if __name__ == '__main__':
