@@ -92,9 +92,6 @@ def new_reservoir():
     id_modele_reservoir = request.form['id_modele_reservoir']
     position_dans_bus = request.form['position_dans_bus'] if 'position_dans_bus' in request.form else None
     nb_cycles_reels = request.form['nb_cycles_reels']
-
-    from datetime import datetime
-
     date_mise_service_str = request.form['date_mise_service']
     date_retrait_service_str = request.form['date_retrait_service'] if 'date_retrait_service' in request.form else None
 
@@ -185,12 +182,9 @@ def edit_reservoir():
     return redirect('/reservoirs/show')
 
 
-@app.route('/reservoirs/etat')
+@app.route('/reservoirs/etat', methods=["GET"])
 def etat_reservoirs():
     filter_word = request.args.get("filter_word")
-
-
-
     date_mise_service_str = request.args.get("date_mise_service")
     date_retrait_service_str = request.args.get("date_retrait_service")
 
