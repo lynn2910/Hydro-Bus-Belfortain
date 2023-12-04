@@ -260,4 +260,56 @@ WHERE
     AND (prix BETWEEN %s AND %s);
 
 """
+#
+#
+# Consommation
+#
+#
+
+#show consommation
+GET_CONSOMMATION ="""SELECT
+    Consomme.id_bus,
+    Consomme.id_date,
+    Consomme.consommation_hydrogene,
+    Consomme.kilometres_parcourus
+    
+FROM
+    Consomme
+INNER JOIN Bus ON Consomme.id_bus = Bus(id_bus)
+INNER JOIN Mois ON id_date.id_date = Mois(id_date)
+"""
+
+INSERT_NEW_CONSOMMATION = """INSERT INTO Consomme(
+id_date,
+consommation_hydrogene,
+kilometres_parcourus,
+id_bus),
+VALUES(%s,%s,%s,%s)"""
+
+DELETE_CONSOMMATION = """DELETE FROM Consomme WHERE id_consommation = %s;"""
+
+EDIT_CONSOMMATION = """UPDATE Consomme
+SET
+    id_bus = %s,
+    consommation_hydrogene = %s,
+    kilometres_parcourus = %s,
+    id_date = %s,
+WHERE
+    id_date = %s,
+    id_bus = %s,"""
+
+
+#
+#
+# Mois
+#
+#
+
+GET_MOIS = """SELECT
+    Mois.id_mois,
+    Mois.date_plein,
+    
+
+FROM
+    Mois"""
 
