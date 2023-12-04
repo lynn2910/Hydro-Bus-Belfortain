@@ -318,7 +318,7 @@ def create_bus():
 
     date_achat = request.form.get("date_service", "")
     try:
-        datetime.datetime.strptime(date_achat, '%Y-%m-%d')
+        datetime.strptime(date_achat, '%Y-%m-%d')
     except ValueError:
         flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD", "error")
         return redirect(f'/flottes_bus/show?nom_bus={nom_bus}')
