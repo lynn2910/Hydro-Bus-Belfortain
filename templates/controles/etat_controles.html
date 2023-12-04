@@ -13,10 +13,10 @@
             <div class=" list_container">
                 <div class="list">
                     <!-- Boucle for pour tous les réservoirs en fonction du paramétrage (filtrage)-->
-                    {% if all_controle|length == 0 %}
+                    {% if controles|length < 1 %}
                         <p style="padding: 0px 0px 30px 20px">Aucun contrôle n'est recensé</p>
                     {% else %}
-                    {% for controle in all_controle %}
+                    {% for controle in controles %}
                         <details class="card drop_shadow">
                             <summary>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="48" viewBox="0 0 16 48" fill="none">
@@ -58,11 +58,9 @@
                     <!-- Valeurs du formulaire à récupérer ! -->
                     <form action="/controles/etat" method="get">
 
-                        <!-- ... (votre code précédent) ... -->
-
                         <div class="field row_flex">
                             <label for="numero_controle">Numéro du contrôle</label>
-                            <input type="number" id="numero_controle" name="numero_controle" value="{{ numero-controle }}">
+                            <input type="number" id="numero_controle" name="numero_controle" value="{{ numero_controle }}">
                         </div>
 
                         <div class="field row_flex">
@@ -84,28 +82,18 @@
                         <div class="field row_flex">
                             <label for="modele_filter">Modèle de réservoir</label>
 
-                            <select class="form-select" id="modele_filter" name="modele_filter">
-                                    <option value="">Aucun modèle</option>
-                                {% for modele in modeles_reservoirs %}
-                                    {% if modele["id_modele_reservoir"] == all_reservoirs["id_modele_reservoir"] %}
-                                        <option selected="" value="{{ modele["id_modele_reservoir"] }}">{{ modele["modele_reservoir"] }}</option>
-                                    {% else %}
-                                        <option value="{{ modele["id_modele_reservoir"] }}">{{ modele["modele_reservoir"] }}</option>
-                                    {% endif %}
-                                {% endfor %}
-                            </select>
+                            <select class="form-select" id="id_modele_reservoir" name="id_modele_reservoir" >
+                                      <option selected value="">Aucun modèle</option>
+                                      {% for modele in modeles_reservoirs %}
+                                          <option value="{{ modele['id_modele_reservoir'] }}">{{ modele["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
+                                      {% endfor %}
+                             </select>
                         </div>
 
                         <div class="field row_flex">
-                            <button>Filtrer</button>
+                            <button type="submit">Filtrer</button>
                             <!-- Ajout d'un bouton de réinitialisation -->
                             <button type="reset">Réinitialiser</button>
-                        </div>
-
-                        <!-- ... (votre code précédent) ... -->
-
-                        <div class="field row_flex">
-                            <button>Filtrer</button>
                         </div>
                     </form>
                 </div>

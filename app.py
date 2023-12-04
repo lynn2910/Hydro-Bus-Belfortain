@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from flask import Flask, render_template, g, request, redirect, flash
 import pymysql.cursors
@@ -189,7 +189,7 @@ def edit_reservoir():
 def etat_reservoirs():
     filter_word = request.args.get("filter_word")
 
-    from datetime import datetime
+
 
     date_mise_service_str = request.args.get("date_mise_service")
     date_retrait_service_str = request.args.get("date_retrait_service")
@@ -561,8 +561,22 @@ def edit_controles():
 def etat_controles():
     filter_id = request.args.get("numero_controle")
 
-    filter_date_min = request.args.get("filter_date_min")
-    filter_date_max = request.args.get("filter_date_max")
+    filter_date_min_str = request.args.get("filter_date_min")
+    filter_date_max_str = request.args.get("filter_date_max")
+
+    if filter_date_min_str:
+        filter_date_min = datetime.strptime(filter_date_min_str, "%Y-%m-%d").date()
+    else:
+        filter_date_min = None
+
+    if filter_date_max_str:
+        filter_date_max = datetime.strptime(filter_date_max_str, "%Y-%m-%d").date()
+    else:
+        filter_date_max = None
+
+    if filter_date_min is not None and filter_date_max is not None and filter_date_min > filter_date_max:
+        flash("La date minimum en service doit être inférieure à la date de maximum.", "error")
+        return redirect('/controles/etat')
 
     prix_min = request.args.get("prix_controle_min ")
     prix_max = request.args.get("prix_controle_max")
@@ -570,26 +584,35 @@ def etat_controles():
     modele_reservoir = request.args.get("modele_reservoir")
 
     cursor = get_db().cursor()
-    cursor.execute(requests.GET_CONTROLE_FILTER, (filter_id, filter_date_min, filter_date_max, modeles_reservoirs, prix_min, prix_max))
+    cursor.execute(requests.GET_CONTROLE_FILTER,
+                   (filter_id,
+                    filter_date_min,
+                    filter_date_max,
+                    modele_reservoir,
+                    prix_min,
+                    prix_max))
 
-    all_controle = cursor.fetchall()
-    print(all_controle)
+    cursor.execute(requests.GET_CONTROLE)
+    controles = cursor.fetchall()
 
     cursor.execute(requests.GET_RESERVOIRS_MODELS)
     modeles_reservoirs = cursor.fetchall()
 
 
 
+    if any([filter_id, filter_date_min, filter_date_max, prix_min, prix_max]):
+        flash(f"La requête a été prise en compte.", "success")
+
 
     return render_template('controles/etat_controles.html',
-                           all_controle = all_controle,
+                           controles = controles,
                            modeles_reservoirs = modeles_reservoirs,
-                           filter_id = filter_id or "",
-                           filter_date_min = filter_date_min or "",
-                           filter_date_max = filter_date_max or "",
-                           prix_min = prix_min or "",
-                           prix_max = prix_max or "",
-                           modele_reservoir = modele_reservoir or "")
+                           filter_id = filter_id or '',
+                           filter_date_min = filter_date_min or '',
+                           filter_date_max = filter_date_max or '',
+                           prix_min = prix_min or '',
+                           prix_max = prix_max or '',
+                           modele_reservoir = modele_reservoir or '')
 
 
 @app.route('/consommation/show')
