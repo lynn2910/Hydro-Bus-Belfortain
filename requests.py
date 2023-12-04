@@ -244,3 +244,22 @@ SET
 WHERE
     id_controle = %s;"""
 
+
+GET_CONTROLE_FILTER ="""SELECT
+    Controle.id_controle,
+    Controle.date_controle,
+    Controle.analyse_rendue,
+    Reservoir.id_reservoir,
+    Reservoir.id_modele_reservoir,
+    Modele_reservoir.modele_reservoir
+FROM
+    Controle
+INNER JOIN Reservoir ON Controle.id_reservoir = Reservoir.id_reservoir
+INNER JOIN Modele_reservoir ON Reservoir.id_modele_reservoir = Modele_reservoir.id_modele_reservoir;
+WHERE
+id_controle LIKE %s
+AND (date_controle BETWEEN %s AND %s)
+AND id_reservoir = %s
+AND (prix BETWEEN %s AND %s);
+"""
+

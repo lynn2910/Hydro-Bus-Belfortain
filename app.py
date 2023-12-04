@@ -532,16 +532,14 @@ def delete_controle():
 
 @app.route('/controles/edit', methods=["POST"])
 def edit_controles():
-    id_controle = request.args.get('id_controle')
-    print(id_controle)
+    # Retrieve form data
+    id_controle = int(request.form.get('id_controle',''))
+    date_controle = request.form.get('date_controle-2','')
+    description = request.form.get('description_2','')
+    id_modele_reservoir = int(request.form.get('id_modele_reservoir',''))
+    prix = int(request.form.get('prix_controle_2',''))
 
     cursor = get_db().cursor()
-
-    # Retrieve form data
-    date_controle = request.form['date_controle_2'+id_controle]
-    description = request.form['description_2'+id_controle] if 'description_2' in request.form else None
-    id_modele_reservoir = request.form['id_modele_reservoir'+id_controle]
-    prix = request.form['prix_controle_2'+id_controle]
 
     # Edit in the database
     cursor.execute(requests.EDIT_CONTROLE, (
@@ -552,7 +550,8 @@ def edit_controles():
         id_controle
     ))
 
-    flash(f"Le contrôle n°{id_controle} a bien été modifié avec date: {date_controle}, description: {description}, id_modele_reservoir: {id_modele_reservoir}, prix: {prix}", "success")
+    flash(f"Le contrôle n°{id_controle} a bien été modifié avec date: {date_controle}, description: {description}, id_modele_reservoir: {id_modele_reservoir}, prix: {prix}",
+        "success")
 
     get_db().commit()
 
@@ -560,7 +559,37 @@ def edit_controles():
 
 @app.route('/controles/etat')
 def etat_controles():
-    return render_template('controles/etat_controles.html')
+    filter_id = request.args.get("numero_controle")
+
+    filter_date_min = request.args.get("filter_date_min")
+    filter_date_max = request.args.get("filter_date_max")
+
+    prix_min = request.args.get("prix_controle_min ")
+    prix_max = request.args.get("prix_controle_max")
+
+    modele_reservoir = request.args.get("modele_reservoir")
+
+    cursor = get_db().cursor()
+    cursor.execute(requests.GET_CONTROLE_FILTER, (filter_id, filter_date_min, filter_date_max, modeles_reservoirs, prix_min, prix_max))
+
+    all_controle = cursor.fetchall()
+    print(all_controle)
+
+    cursor.execute(requests.GET_RESERVOIRS_MODELS)
+    modeles_reservoirs = cursor.fetchall()
+
+
+
+
+    return render_template('controles/etat_controles.html',
+                           all_controle = all_controle,
+                           modeles_reservoirs = modeles_reservoirs,
+                           filter_id = filter_id or "",
+                           filter_date_min = filter_date_min or "",
+                           filter_date_max = filter_date_max or "",
+                           prix_min = prix_min or "",
+                           prix_max = prix_max or "",
+                           modele_reservoir = modele_reservoir or "")
 
 
 @app.route('/consommation/show')

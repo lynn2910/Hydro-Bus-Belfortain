@@ -64,33 +64,32 @@
                                     </div>
                                 </div>
                                 <p>controle n°{{ controle["id_controle"] }} ({{ controle["date_controle"] }})</p>
-                               <form method="post", action="/controles/edit">
-                                <div class="field row_flex">
-                                    <label for="description_2">Compte rendu du contrôle</label>
-                                    <textarea name="description_2" id="description_2" cols="30" rows="10"
-                                              class="compte_rendu_area"></textarea>
-                                </div>
-                                <div class="field row_flex">
-                                      <label for="date_controle_2">Date du contrôle</label>
-                                      <input type="date" id="date_controle_2" name="date_controle_2">
-                                </div>
-                                <div class="field row_flex">
-                                    <label for="id_modele_reservoir">Modèle réservoir</label>
-                                     <select class="form-select" id="id_modele_reservoir" name="id_modele_reservoir" required>
-                                              <option selected value="">Aucun modèle</option>
-                                              {% for modele in modeles_reservoirs %}
-                                                  <option value="{{ modele['id_modele_reservoir'] }}">{{ modele["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
-                                              {% endfor %}
-                                     </select>
-                                </div>
-                                <div class="field row_flex">
-                                    <label for="prix_controle_2">Prix du contrôle</label>
-                                    <input type="number" id="prix_controle_2" name="prix_controle_2">
-                                </div>
-                                <div class="field row_flex">
-                                    <button>Ajouter</button>
-                                </div>
-                            </form>
+                               <form method="post" action="/controles/edit">
+                                   <input id="id_controle" name="id_controle" type="text" value="{{ controle['id_controle'] }}" hidden="hidden">
+                                    <div class="field row_flex">
+                                        <label for="description_2">Compte rendu du contrôle</label>
+                                        <textarea name="description_2" id="description_2" cols="30" rows="10"
+                                                  class="compte_rendu_area"></textarea>
+                                    </div>
+                                    <div class="field row_flex">
+                                          <label for="date_controle_2">Date du contrôle</label>
+                                          <input type="date" id="date_controle_2" name="date_controle_2">
+                                    </div>
+                                    <div class="field row_flex">
+                                        <label for="id_modele_reservoir">Modèle réservoir</label>
+                                         <select class="form-select" id="id_modele_reservoir" name="id_modele_reservoir" required>
+                                                  <option selected value="">Aucun modèle</option>
+                                                  {% for modele in modeles_reservoirs %}
+                                                      <option value="{{ modele['id_modele_reservoir'] }}">{{ modele["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
+                                                  {% endfor %}
+                                         </select>
+                                    </div>
+                                    <div class="field row_flex">
+                                        <label for="prix_controle_2">Prix du contrôle</label>
+                                        <input type="number" id="prix_controle_2" name="prix_controle_2">
+                                    </div>
+                                    <button type="submit">Ajouter</button>
+                               </form>
                             </div>
                         </div>
                         <div class="popup delete">
