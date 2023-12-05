@@ -397,7 +397,7 @@ def edit_bus():
     date_service = request.form.get("date_service", "")
 
     try:
-        datetime.datetime.strptime(date_service, '%Y-%m-%d')
+        datetime.strptime(date_service, '%Y-%m-%d')
     except ValueError:
         flash("La date de service n'est pas en format correct, elle doit être au format YYYY-MM-DD", "error")
         return redirect('/flottes_bus/show')
