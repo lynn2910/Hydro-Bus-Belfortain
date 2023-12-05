@@ -12,23 +12,22 @@
 
             <div class=" list_container">
                 <div class="list">
-                    <!-- Boucle for pour tous les réservoirs en fonction du paramétrage (filtrage)-->
-                    {% for consommation in consommations %}
+                    {% for Consomme in consommations %}
                     <details class="card drop_shadow">
                             <summary>
                                 <img src="./static/images/conso.svg" alt="">
-                                <h3>Consommation n°{{ Consomme["id_consommation"]}} ({{ Consomme["date_consommation"] }}) Bus-{{ Consomme["id_bus"] }}</h3>
+                                <h3>Consommation du ({{ Consomme["date_plein"] }}) du bus {{ Consomme['nom_bus']}} n°-{{ Consomme["id_bus"] }}</h3>
                             </summary>
                             <div class="body">
                             <div class="row_flex">
                                 <div class="left">
                                 <div class="info">
                                     <h4>Date</h4>
-                                    <p>{{ Consomme["date_consommation"]}}</p>
+                                    <p>{{ Consomme}}</p>
                                 </div>
                                 <div class="info">
                                     <h4>Bus</h4>
-                                    <p>bus-{{ Consomme["nom_bus"] }}</p>
+                                    <p>bus {{ Consomme['nom_bus']}} n°-{{ Consomme["id_bus"] }}</p>
                                 </div>
                             </div>
                             <div class="right i_love_you">
@@ -46,13 +45,13 @@
                             <div class="full">
                                 <div class="info">
                                     <h4>Quantité d'hydrogène consommée</h4>
-                                    <p>{{ Consomme["qt_hydrogène"]}}</p>
+                                    <p>{{ Consomme["consommation_hydrogene"]}}</p>
                                 </div>
                             </div>
                                 <div class="full">
                                 <div class="info">
                                     <h4>Distance parcourue</h4>
-                                    <p>{{ Consomme["distance_conso"]}}</p>
+                                    <p>{{ Consomme["kilometres_parcourus"]}}</p>
                                 </div>
                             </div>
                         </div>
@@ -66,8 +65,8 @@
                                         </svg>
                                     </div>
                                 </div>
-                                <p>consommation n°{{ Consomme["id_consommation"] }} ({{ Consomme["date_consommation"] }})</p>
-                               <form method="post", action="/consommations/edit">
+                                <p>consommation  ({{ Consomme["date_plein"] }})</p>
+                               <form method="post", action="/consommation/edit">
                                 <div class="field row_flex">
                                     <label for="qt_hydrogène_2">Quantité d'hydrogène consommée</label>
                                     <input type="number" id="qt_hydrogène_2" name="qt_hydrogène_2">
@@ -81,8 +80,8 @@
                                       <input type="date" id="date_consommation_2" name="date_consommation_2">
                                 </div>
                                 <div class="field row_flex">
-                                    <label for="nom_bus">Bus Concerné</label>
-                                     <select class="form-select" id="nom_bus" name="nom_bus" required>
+                                    <label for="id_bus">Bus Concerné</label>
+                                     <select class="form-select" id="id_bus" name="id_bus" required>
                                               <option selected value="">Aucun bus</option>
                                               {% for bus in buses %}
                                                   <option value="{{ Bus['id_bus'] }}">{{ Bus["id_bus"] }} - {{ Bus["id_bus"] }}</option>
@@ -95,19 +94,19 @@
                         <div class="popup delete">
                             <div class="content">
                                 <div class="popup_head">
-                                    <h2>Supprimer un réservoir</h2>
+                                    <h2>Supprimer une consommation</h2>
                                     <div class="popup_close">
                                         <svg  viewBox="0 0 47 47" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1.3006 1.30057C-0.433532 3.0347 -0.433532 5.84622 1.3006 7.58034L17.2202 23.5L1.3006 39.4198C-0.433532 41.1538 -0.433532 43.9655 1.3006 45.6996C3.03469 47.4335 5.84625 47.4335 7.58032 45.6996L23.5 29.7796L39.4198 45.6996C41.1539 47.4335 43.9656 47.4335 45.6995 45.6996C47.4335 43.9655 47.4335 41.1538 45.6995 39.4198L29.7796 23.5L45.6995 7.58039C47.4335 5.84631 47.4335 3.03474 45.6995 1.30065C43.9651 -0.433479 41.1539 -0.433479 39.4198 1.30065L23.5 17.2202L7.58032 1.30057C5.84625 -0.433522 3.03469 -0.433522 1.3006 1.30057Z" fill="black"></path>
                                         </svg>
                                     </div>
                                 </div>
-                                <p>Supprimer la consomation n°{{consommation["id_consommation"]}}</p>
+                                <p>Supprimer la consomation n°{{Consomme["id_date"]}}</p>
 
                                 <div class="row_flex action_buttons">
                                     <button type="button" class="cancel">Annuler</button>
-                                    <form action="/consommations/delete" method="get">
-                                        <input name="id_consommation" type="text" value="{{ Consomme['id_consommation'] }}" hidden="hidden">
+                                    <form action="/consommation/delete" method="get">
+                                        <input name="id_bus" type="text" value="{{ Consomme['id_bus'] }}" hidden="hidden">
                                         <button type="submit">Supprimer</button>
                                     </form>
                                 </div>
@@ -137,11 +136,11 @@
                                       <input type="date" id="date_consommation_2" name="date_consommation_2" required>
                                 </div>
                                 <div class="field row_flex">
-                                    <label for="id_modele_reservoir">bus concerné</label>
-                                     <select class="form-select" id="nom_bus" name="nom_bus" required>
+                                    <label for="id_bus">bus concerné</label>
+                                     <select class="form-select" id="id_bus" name="id_bus" required>
                                               <option selected value="">Aucun Bus</option>
                                               {% for bus in buses %}
-                                                  <option value="{{ Bus['nom_bus'] }}">{{ Bus["nom_bus"] }} - {{ Bus["nom_bus"] }}</option>
+                                                  <option value="{{ Consomme['nom_bus'] }}">{{ Consomme['nom_bus'] }} - {{ Consomme['nom_bus'] }}</option>
                                               {% endfor %}
                                      </select>
                                 </div>
