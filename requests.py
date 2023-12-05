@@ -263,6 +263,20 @@ WHERE
 """
 #
 #
+# Mois
+#
+#
+
+GET_MOIS = """SELECT
+    Mois.id_mois,
+    Mois.date_plein,
+
+
+FROM
+    Mois"""
+
+#
+#
 # Consommation
 #
 #
@@ -272,22 +286,24 @@ GET_CONSOMMATION ="""SELECT
     Consomme.id_bus,
     Consomme.id_date,
     Consomme.consommation_hydrogene,
-    Consomme.kilometres_parcourus
-    
+    Consomme.kilometres_parcourus,
+    Bus.nom_bus,
+    Mois.date_plein
 FROM
     Consomme
-INNER JOIN Bus ON Consomme.id_bus = Bus(id_bus)
-INNER JOIN Mois ON id_date.id_date = Mois(id_date)
+    INNER JOIN Bus ON Consomme.id_bus = Bus.id_bus
+    INNER JOIN Mois ON Consomme.id_date = Mois.id_mois
 """
 
 INSERT_NEW_CONSOMMATION = """INSERT INTO Consomme(
+id_consommation,
 id_date,
 consommation_hydrogene,
 kilometres_parcourus,
 id_bus),
-VALUES(%s,%s,%s,%s)"""
+VALUES(%s,%s,%s,%s,%s)"""
 
-DELETE_CONSOMMATION = """DELETE FROM Consomme WHERE id_consommation = %s;"""
+DELETE_CONSOMMATION = """DELETE FROM Consomme WHERE id_bus = %s;"""
 
 EDIT_CONSOMMATION = """UPDATE Consomme
 SET
@@ -298,19 +314,4 @@ SET
 WHERE
     id_date = %s,
     id_bus = %s,"""
-
-
-#
-#
-# Mois
-#
-#
-
-GET_MOIS = """SELECT
-    Mois.id_mois,
-    Mois.date_plein,
-    
-
-FROM
-    Mois"""
 
