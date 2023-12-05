@@ -285,11 +285,6 @@ def etat_reservoirs():
     )
 
 
-@app.route('/consommation/show')
-def modeles_reservoirs():
-    return render_template('consommation/show_consommation.html')
-
-
 @app.route('/flottes_bus/show')
 def show_flottes_bus():
     cursor = get_db().cursor()
@@ -624,18 +619,16 @@ def etat_controles():
                            modele_reservoir = modele_reservoir or '')
 
 
-@app.route('/consommation/show')
+@app.route('/consommation/show', methods=["GET"])
 def show_consommation():
     cursor = get_db().cursor()
     cursor.execute(requests.GET_CONSOMMATION)
-    consommation = cursor.fetchall()
+    consommations = cursor.fetchall()
 
-    cursor.execute(requests.BUSES_INSIDE_FLEETS)
-    buses = cursor.fetchall()
+    print("consommation")
 
-    return render_template('consommation/show_consommation.html',
-                           consommation = consommation,
-                           buses = buses)
+    return render_template('/consommation/show_consommation.html', consommations=consommations)
+
 
 @app.route('/consommation/new', methods=['POST'])
 def new_consommation():
@@ -647,7 +640,7 @@ def new_consommation():
     kilometres_parcourus = request.form['distance_conso_2']
     id_bus = request.form['nom_bus']
 
-    cursor.execute(requests.INSERT_NEW_CONTROLE, (
+    cursor.execute(requests.INSERT_NEW_CONSOMMATION, (
         date_consommation,
         consommation_hydrogene,
         kilometres_parcourus,
@@ -667,8 +660,6 @@ def new_consommation():
 def delete_consommation():
     # Retrieve form data from request.args
     id_consommation = request.args.get('id_consommation')
-
-    print(id_consommation)
 
     cursor = get_db().cursor()
     # Delete the control
@@ -692,7 +683,7 @@ def edit_consommation():
     date_consommation = request.form['date_consommation_2'+id_consommation]
     consommation_hydrogene = request.form['qt_hydrogène_2'+id_consommation if 'qt_hydrogène_2' in request.form else None]
     kilometres_parcourus = request.form['distance_conso_2'+id_consommation]
-    id_bus = request.form['nom_bus'+id_consommation]
+    id_bus = request.form['id_bus'+id_consommation]
 
     # Edit in the database
     cursor.execute(requests.EDIT_CONTROLE, (
@@ -708,6 +699,8 @@ def edit_consommation():
     get_db().commit()
 
     return redirect('/consommation/show')
+
+
 
 
 if __name__ == '__main__':
