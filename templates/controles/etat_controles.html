@@ -8,11 +8,10 @@
 <main>
     <div class="row_flex page_formatter">
         <div class="big_docker models_list width_70">
-            <h2>Liste des réservoirs</h2>
+            <h2>Liste des contrôles</h2>
 
             <div class=" list_container">
                 <div class="list">
-                    <!-- Boucle for pour tous les réservoirs en fonction du paramétrage (filtrage)-->
                     {% if controles|length < 1 %}
                         <p style="padding: 0px 0px 30px 20px">Aucun contrôle n'est recensé</p>
                     {% else %}
