@@ -33,6 +33,10 @@
                                     <h4>reservoir</h4>
                                     <p>reservoir-{{ controle["modele_reservoir"] }}</p>
                                 </div>
+                                <div class="info">
+                                    <h4>Prix</h4>
+                                    <p>{{ controle["prix"] }}€</p>
+                                </div>
                             </div>
                             <div class="right i_love_you">
                                 <div class="card_actions">
@@ -69,24 +73,28 @@
                                     <div class="field row_flex">
                                         <label for="description_2">Compte rendu du contrôle</label>
                                         <textarea name="description_2" id="description_2" cols="30" rows="10"
-                                                  class="compte_rendu_area"></textarea>
+                                                  class="compte_rendu_area">{{ controle["analyse_rendue"] }}</textarea>
                                     </div>
                                     <div class="field row_flex">
                                           <label for="date_controle_2">Date du contrôle</label>
-                                          <input type="date" id="date_controle_2" name="date_controle_2">
+                                          <input type="date" id="date_controle_2" name="date_controle_2" value="{{ controle["date_controle"] }}">
                                     </div>
                                     <div class="field row_flex">
                                         <label for="id_modele_reservoir">Modèle réservoir</label>
-                                         <select class="form-select" id="id_modele_reservoir" name="id_modele_reservoir" required>
-                                                  <option selected value="">Aucun modèle</option>
-                                                  {% for modele in modeles_reservoirs %}
-                                                      <option value="{{ modele['id_modele_reservoir'] }}">{{ modele["id_modele_reservoir"] }} - {{ modele["modele_reservoir"] }}</option>
-                                                  {% endfor %}
-                                         </select>
+                                            <select class="form-select" id="id_modele_reservoir" name="id_modele_reservoir" required>
+                                                <option selected disabled value="">Sélectionnez un modèle</option>
+                                                {% for modele in modeles_reservoirs %}
+                                                    {% if modele["id_modele_reservoir"] == controle["id_modele_reservoir"] %}
+                                                        <option selected value="{{ modele['id_modele_reservoir'] }}">{{ modele['id_modele_reservoir'] }} - {{ modele["modele_reservoir"] }}</option>
+                                                    {% else %}
+                                                        <option value="{{ modele['id_modele_reservoir'] }}">{{ modele['id_modele_reservoir'] }} - {{ modele["modele_reservoir"] }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
                                     </div>
                                     <div class="field row_flex">
                                         <label for="prix_controle_2">Prix du contrôle</label>
-                                        <input type="number" id="prix_controle_2" name="prix_controle_2">
+                                        <input type="number" id="prix_controle_2" name="prix_controle_2" value="{{ controle["prix"] }}">
                                     </div>
                                     <button type="submit">Ajouter</button>
                                </form>
@@ -150,6 +158,13 @@
                             <button>Ajouter</button>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div>
+                <div class="big_docker full_width yeet_padding">
+                    <h2>Rechercher un état</h2>
+                    <p> Pour rechercher un état de contrôle, veuillez accéder à cette page</p>
+                    <a class="button" href="/controles/etat">Etat contrôle</a>
                 </div>
             </div>
         </div>
