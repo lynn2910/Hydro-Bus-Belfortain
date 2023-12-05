@@ -156,8 +156,23 @@ def edit_reservoir():
     # Retrieve form data
     id_bus = request.form['id_bus'] if 'id_bus' in request.form else None
     id_reservoir = request.form['id_reservoir']
-    date_mise_service = request.form['date_service_' + id_reservoir]
-    date_retrait_service = request.form['date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
+    date_mise_service_str = request.form['date_service_' + id_reservoir]
+    date_retrait_service_str = request.form['date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
+
+    if date_mise_service_str:
+        date_mise_service = datetime.strptime(date_mise_service_str, "%Y-%m-%d").date()
+    else:
+        date_mise_service = None
+
+    if date_retrait_service_str:
+        date_retrait_service = datetime.strptime(date_retrait_service_str, "%Y-%m-%d").date()
+    else:
+        date_retrait_service = None
+
+    if date_mise_service is not None and date_retrait_service is not None and date_mise_service > date_retrait_service:
+        flash("La date de mise en service doit être inférieure à la date de retrait.", "error")
+        return redirect('/reservoirs/show')
+
     taille_reservoir = request.form['taille_reservoir_' + id_reservoir]
     id_modele_reservoir = request.form['modele_reservoir_' + id_reservoir]
     position_dans_bus = request.form['position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
