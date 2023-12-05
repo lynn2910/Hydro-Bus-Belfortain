@@ -1,13 +1,15 @@
 #!/bin/bash
 
 HOST=localhost
-LOGIN=login
-PASSWORD=secret
-DATABASE=BDD_s1_projet
+LOGIN="lynn"
+PASSWORD="Pusyux8484"
+DATABASE="hydrobus_belfortain"
 
-sed -i "s/host=.*/host=\"${HOST}\",/g" app.py
-sed -i "s/user=.*/user=\"${LOGIN}\",/g" app.py
-sed -i "s/password=.*/password=\"${PASSWORD}\",/g" app.py
-sed -i "s/database=.*/database=\"${DATABASE}\",/g" app.py
+cp app.py test_app.py
+
+sed -i "s/host=.*/host=\"${HOST}\",/g" test_app.py
+sed -i "s/user=.*/user=\"${LOGIN}\",/g" test_app.py
+sed -i "s/password=.*/password=\"${PASSWORD}\",/g" test_app.py
+sed -i "s/database=.*/database=\"${DATABASE}\",/g" test_app.py
 
 

@@ -43,7 +43,7 @@ CREATE TABLE Bus(
    id_modele_bus INT NOT NULL,
    PRIMARY KEY(id_bus),
    FOREIGN KEY(id_flotte) REFERENCES Flotte(id_flotte),
-   FOREIGN KEY(id_modele_bus) REFERENCES Modele_bus(id_modele_bus)
+   FOREIGN KEY(id_modele_bus) REFERENCES Modele_bus(id_modele_bus) ON DELETE CASCADE
 );
 
 CREATE TABLE Reservoir(
@@ -57,7 +57,7 @@ CREATE TABLE Reservoir(
    id_modele_reservoir INT NOT NULL,
    PRIMARY KEY(id_reservoir),
    FOREIGN KEY(id_bus) REFERENCES Bus(id_bus),
-   FOREIGN KEY(id_modele_reservoir) REFERENCES Modele_reservoir(id_modele_reservoir)
+   FOREIGN KEY(id_modele_reservoir) REFERENCES Modele_reservoir(id_modele_reservoir) ON DELETE CASCADE
 );
 
 CREATE TABLE Controle (
@@ -67,7 +67,7 @@ CREATE TABLE Controle (
    id_reservoir INT NOT NULL,
    prix DECIMAL(5, 2) NOT NULL,
    PRIMARY KEY(id_controle),
-   FOREIGN KEY(id_reservoir) REFERENCES Reservoir(id_reservoir)
+   FOREIGN KEY(id_reservoir) REFERENCES Reservoir(id_reservoir) ON DELETE CASCADE
 );
 
 CREATE TABLE Consomme(
@@ -76,8 +76,8 @@ CREATE TABLE Consomme(
    consommation_hydrogene DECIMAL(9,2),
    kilometres_parcourus DECIMAL(9,2),
    PRIMARY KEY(id_bus, id_date),
-   FOREIGN KEY(id_bus) REFERENCES Bus(id_bus),
-   FOREIGN KEY(id_date) REFERENCES Mois(id_mois)
+   FOREIGN KEY(id_bus) REFERENCES Bus(id_bus) ON DELETE CASCADE,
+   FOREIGN KEY(id_date) REFERENCES Mois(id_mois) ON DELETE CASCADE
 );
 
 
