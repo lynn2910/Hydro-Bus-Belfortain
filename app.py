@@ -546,7 +546,7 @@ def edit_controles():
     date_controle = request.form.get('date_controle-2','')
     description = request.form.get('description_2','')
     id_modele_reservoir = int(request.form.get('id_modele_reservoir',''))
-    prix = int(request.form.get('prix_controle_2',''))
+    prix = float(request.form.get('prix_controle_2',''))
 
     cursor = get_db().cursor()
 
