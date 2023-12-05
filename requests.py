@@ -216,6 +216,7 @@ GET_CONTROLE ="""SELECT
     Controle.id_controle,
     Controle.date_controle,
     Controle.analyse_rendue,
+    Controle.prix,
     Reservoir.id_reservoir,
     Reservoir.id_modele_reservoir,
     Modele_reservoir.modele_reservoir
