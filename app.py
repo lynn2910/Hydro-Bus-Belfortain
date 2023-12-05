@@ -630,6 +630,11 @@ def show_consommation():
     return render_template('/consommation/show_consommation.html', consommations=consommations)
 
 
+@app.route('/consommation/etat', methods=["GET"])
+def etat_consommation():
+    return render_template('/consommation/etat_consommation.html')
+
+
 @app.route('/consommation/new', methods=['POST'])
 def new_consommation():
     cursor = get_db().cursor()
