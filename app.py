@@ -124,9 +124,7 @@ def new_reservoir():
     get_db().commit()
 
     id_reservoir = cursor.lastrowid
-    flash(
-        f"L'ajout du Réservoir n°{id_reservoir} a été appliqué avec id_bus: {id_bus}, id_reservoir: {id_reservoir}, date_mise_service: {date_mise_service}, date_retrait_service: {date_retrait_service}, taille_reservoir: {taille_reservoir}, id_modele_reservoir: {id_modele_reservoir}, position_dans_bus: {position_dans_bus}, nb_cycles_reels: {nb_cycles_reels}.",
-        "success")
+    flash(f"L'ajout du Réservoir n°{id_reservoir} a été appliqué avec id_bus: {id_bus}, id_reservoir: {id_reservoir}, date_mise_service: {date_mise_service}, date_retrait_service: {date_retrait_service}, taille_reservoir: {taille_reservoir}, id_modele_reservoir: {id_modele_reservoir}, position_dans_bus: {position_dans_bus}, nb_cycles_reels: {nb_cycles_reels}.", "success")
 
     return redirect('/reservoirs/show')
 
@@ -158,13 +156,26 @@ def edit_reservoir():
     # Retrieve form data
     id_bus = request.form['id_bus'] if 'id_bus' in request.form else None
     id_reservoir = request.form['id_reservoir']
-    date_mise_service = request.form['date_service_' + id_reservoir]
-    date_retrait_service = request.form[
-        'date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
+    date_mise_service_str = request.form['date_service_' + id_reservoir]
+    date_retrait_service_str = request.form['date_retrait_' + id_reservoir] if 'date_retrait_' + id_reservoir in request.form else None
+
+    if date_mise_service_str:
+        date_mise_service = datetime.strptime(date_mise_service_str, "%Y-%m-%d").date()
+    else:
+        date_mise_service = None
+
+    if date_retrait_service_str:
+        date_retrait_service = datetime.strptime(date_retrait_service_str, "%Y-%m-%d").date()
+    else:
+        date_retrait_service = None
+
+    if date_mise_service is not None and date_retrait_service is not None and date_mise_service > date_retrait_service:
+        flash("La date de mise en service doit être inférieure à la date de retrait.", "error")
+        return redirect('/reservoirs/show')
+
     taille_reservoir = request.form['taille_reservoir_' + id_reservoir]
     id_modele_reservoir = request.form['modele_reservoir_' + id_reservoir]
-    position_dans_bus = request.form[
-        'position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
+    position_dans_bus = request.form['position_reservoir_' + id_reservoir] if 'position_reservoir_' + id_reservoir in request.form else None
     nb_cycles_reels = request.form['cycle_reel_' + id_reservoir]
 
     # Edit in the database
@@ -179,9 +190,7 @@ def edit_reservoir():
         id_reservoir
     ))
 
-    flash(
-        f"Le réservoir a bien été modifié avec id_bus: {id_bus}, id_reservoir: {id_reservoir}, date_mise_service: {date_mise_service}, date_retrait_service: {date_retrait_service}, taille_reservoir: {taille_reservoir}, id_modele_reservoir: {id_modele_reservoir}, position_dans_bus: {position_dans_bus}, nb_cycles_reels: {nb_cycles_reels}.",
-        "success")
+    flash(f"Le réservoir a bien été modifié avec id_bus: {id_bus}, id_reservoir: {id_reservoir}, date_mise_service: {date_mise_service}, date_retrait_service: {date_retrait_service}, taille_reservoir: {taille_reservoir}, id_modele_reservoir: {id_modele_reservoir}, position_dans_bus: {position_dans_bus}, nb_cycles_reels: {nb_cycles_reels}.", "success")
 
     get_db().commit()
 
@@ -371,9 +380,7 @@ def delete_bus():
 
         return redirect('/flottes_bus/show')
     except pymysql.err.IntegrityError:
-        flash(
-            f"Le bus {bus_name['nom_bus']} ne peut pas être supprimé.\nVeillez à supprimer ou dé-lier tout réservoir associé à ce bus.",
-            "error")
+        flash(f"Le bus {bus_name['nom_bus']} ne peut pas être supprimé.\nVeillez à supprimer ou dé-lier tout réservoir associé à ce bus.", "error")
 
         return redirect('/flottes_bus/show')
 
@@ -485,9 +492,8 @@ def show_controles():
     modeles_reservoirs = cursor.fetchall()
 
     return render_template('controles/show_controles.html',
-                           controles=controles,
-                           modeles_reservoirs=modeles_reservoirs)
-
+                           controles = controles,
+                           modeles_reservoirs = modeles_reservoirs)
 
 @app.route('/controles/new', methods=['POST'])
 def new_controle():
@@ -533,15 +539,14 @@ def delete_controle():
     print(f"Avant la redirection : {id_controle}")
     return redirect('/controles/show')
 
-
 @app.route('/controles/edit', methods=["POST"])
 def edit_controles():
     # Retrieve form data
-    id_controle = int(request.form.get('id_controle', ''))
-    date_controle = request.form.get('date_controle-2', '')
-    description = request.form.get('description_2', '')
-    id_modele_reservoir = int(request.form.get('id_modele_reservoir', ''))
-    prix = float(request.form.get('prix_controle_2', ''))
+    id_controle = int(request.form.get('id_controle',''))
+    date_controle = request.form.get('date_controle-2','')
+    description = request.form.get('description_2','')
+    id_modele_reservoir = int(request.form.get('id_modele_reservoir',''))
+    prix = int(request.form.get('prix_controle_2',''))
 
     cursor = get_db().cursor()
 
@@ -554,14 +559,12 @@ def edit_controles():
         id_controle
     ))
 
-    flash(
-        f"Le contrôle n°{id_controle} a bien été modifié avec date: {date_controle}, description: {description}, id_modele_reservoir: {id_modele_reservoir}, prix: {prix}",
+    flash(f"Le contrôle n°{id_controle} a bien été modifié avec date: {date_controle}, description: {description}, id_modele_reservoir: {id_modele_reservoir}, prix: {prix}",
         "success")
 
     get_db().commit()
 
     return redirect('/controles/show')
-
 
 @app.route('/controles/etat')
 def etat_controles():
@@ -604,18 +607,21 @@ def etat_controles():
     cursor.execute(requests.GET_RESERVOIRS_MODELS)
     modeles_reservoirs = cursor.fetchall()
 
+
+
     if any([filter_id, filter_date_min, filter_date_max, prix_min, prix_max]):
         flash(f"La requête a été prise en compte.", "success")
 
+
     return render_template('controles/etat_controles.html',
-                           controles=controles,
-                           modeles_reservoirs=modeles_reservoirs,
-                           filter_id=filter_id or '',
-                           filter_date_min=filter_date_min or '',
-                           filter_date_max=filter_date_max or '',
-                           prix_min=prix_min or '',
-                           prix_max=prix_max or '',
-                           modele_reservoir=modele_reservoir or '')
+                           controles = controles,
+                           modeles_reservoirs = modeles_reservoirs,
+                           filter_id = filter_id or '',
+                           filter_date_min = filter_date_min or '',
+                           filter_date_max = filter_date_max or '',
+                           prix_min = prix_min or '',
+                           prix_max = prix_max or '',
+                           modele_reservoir = modele_reservoir or '')
 
 
 @app.route('/consommation/show')
@@ -628,9 +634,8 @@ def show_consommation():
     buses = cursor.fetchall()
 
     return render_template('consommation/show_consommation.html',
-                           consommation=consommation,
-                           buses=buses)
-
+                           consommation = consommation,
+                           buses = buses)
 
 @app.route('/consommation/new', methods=['POST'])
 def new_consommation():
@@ -676,7 +681,6 @@ def delete_consommation():
     print(f"Avant la redirection : {id_consommation}")
     return redirect('/consommation/show')
 
-
 @app.route('/consommation/edit', methods=["POST"])
 def edit_consommation():
     id_consommation = request.args.get('id_consommation')
@@ -685,11 +689,10 @@ def edit_consommation():
     cursor = get_db().cursor()
 
     # Retrieve form data
-    date_consommation = request.form['date_consommation_2' + id_consommation]
-    consommation_hydrogene = request.form[
-        'qt_hydrogène_2' + id_consommation if 'qt_hydrogène_2' in request.form else None]
-    kilometres_parcourus = request.form['distance_conso_2' + id_consommation]
-    id_bus = request.form['nom_bus' + id_consommation]
+    date_consommation = request.form['date_consommation_2'+id_consommation]
+    consommation_hydrogene = request.form['qt_hydrogène_2'+id_consommation if 'qt_hydrogène_2' in request.form else None]
+    kilometres_parcourus = request.form['distance_conso_2'+id_consommation]
+    id_bus = request.form['nom_bus'+id_consommation]
 
     # Edit in the database
     cursor.execute(requests.EDIT_CONTROLE, (
@@ -700,9 +703,7 @@ def edit_consommation():
         id_consommation
     ))
 
-    flash(
-        f"La consommation n°{id_consommation} a bien été modifié avec date: {date_consommation}, qt_hydrogène: {consommation_hydrogene}, distance_conso: {kilometres_parcourus}, nom_bus: {id_bus}",
-        "success")
+    flash(f"La consommation n°{id_consommation} a bien été modifié avec date: {date_consommation}, qt_hydrogène: {consommation_hydrogene}, distance_conso: {kilometres_parcourus}, nom_bus: {id_bus}", "success")
 
     get_db().commit()
 
