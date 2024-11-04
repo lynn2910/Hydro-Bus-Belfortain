@@ -1,6 +1,6 @@
 # Équipe Team Chartreuse - Projet BUT Informatique Hydrobus Belfortain - 09/10/2023 05/12/2023
 
-![Logo Chartreuse]([./docs/img/logoTeamChartreuse.png](https://github.com/marvynlevin/hydrobusBelfortain/raw/main/docs/img/logoTeamChartreuse.png))
+![Logo Chartreuse](https://github.com/marvynlevin/hydrobusBelfortain/raw/main/docs/img/logoTeamChartreuse.png)
 
 ## Informations Équipe
 - **Membres** :
